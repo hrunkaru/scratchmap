@@ -220,14 +220,14 @@
             }
 
             select {
-                padding: 12px 16px;
-                font-size: 16px;
+                padding: 10px 14px;
+                font-size: 15px;
                 width: 100%;
             }
 
             button {
-                padding: 12px 20px;
-                font-size: 16px;
+                padding: 10px 16px;
+                font-size: 15px;
                 width: 100%;
             }
 
@@ -251,7 +251,7 @@
             }
 
             #map1 {
-                height: 500px;
+                height: 450px;
             }
         }
 
@@ -265,8 +265,8 @@
             }
 
             select, button {
-                padding: 14px 18px;
-                font-size: 16px;
+                padding: 10px 14px;
+                font-size: 15px;
             }
 
             #progressContainer {
@@ -286,7 +286,13 @@
             }
 
             #map1 {
-                height: 400px;
+                height: 350px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            #map1 {
+                height: 320px;
             }
         }
     </style>
@@ -356,6 +362,14 @@
         projection: 'mercator',
         responsive: true,
         height: 700,
+        setProjection: function(element) {
+            var projection = d3.geo.mercator()
+                .center([20, 50]) // Center on Europe (longitude, latitude)
+                .scale(150)
+                .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
+            var path = d3.geo.path().projection(projection);
+            return {path: path, projection: projection};
+        },
         fills: {
             defaultFill: '#B0B0B0',
             visited: '#F5D02A',
