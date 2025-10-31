@@ -363,9 +363,17 @@
         responsive: true,
         height: 700,
         setProjection: function(element) {
+            // Adjust scale based on screen width for better mobile experience
+            var scale = 150;
+            if (window.innerWidth <= 480) {
+                scale = 80; // Smaller scale for small phones
+            } else if (window.innerWidth <= 768) {
+                scale = 100; // Medium scale for tablets
+            }
+
             var projection = d3.geo.mercator()
                 .center([20, 50]) // Center on Europe (longitude, latitude)
-                .scale(150)
+                .scale(scale)
                 .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
             var path = d3.geo.path().projection(projection);
             return {path: path, projection: projection};
