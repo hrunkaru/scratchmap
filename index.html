@@ -6,53 +6,218 @@
     <script src="d3/topojson.v1.min.js"></script>
     <script src="datamaps/datamaps.world.min.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .controls-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            min-height: 40px;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+
+        select {
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            background: white;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+
+        select:hover {
+            border-color: #9ca3af;
+        }
+
+        select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        button {
+            padding: 8px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        button:active {
+            background: #1d4ed8;
+        }
+
+        #progressContainer {
+            flex: 1;
+            min-width: 280px;
+            padding: 6px 10px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+            display: block;
+        }
+
+        .progress-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .progress-bar-container {
+            flex: 1;
+            background: #e5e7eb;
+            height: 24px;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .progress-bar-container:hover {
+            background: #d1d5db;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: #60a5fa;
+            transition: width 0.3s ease;
+        }
+
+        #progressYear {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 700;
+            font-size: 13px;
+            color: #1f2937;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+        }
+
+        #progressText {
+            min-width: 80px;
+            text-align: right;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            white-space: nowrap;
+        }
+
+        #map1 {
+            position: relative;
+            width: 100%;
+            height: 700px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
         svg {
             overflow: hidden;
         }
+
         .hoverinfo {
             position: absolute;
             background: white;
-            border: 1px solid gray;
-            padding: 5px;
-            border-radius: 5px;
+            border: 1px solid #e5e7eb;
+            padding: 10px 15px;
+            border-radius: 6px;
             pointer-events: none;
-            font-size: 12px;
-            z-index: 1000; /* Ensure tooltip is above everything */
+            font-size: 13px;
+            font-weight: 500;
+            color: #374151;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body>
-    <h1>Visited Places</h1>
-    <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <label for="yearFilter">Filter by year: </label>
-            <select id="yearFilter">
-                <option value="all">All Years</option>
-            </select>
-            <button id="animateBtn">Animate by Visit Order</button>
-        </div>
-        <div id="progressContainer" style="display: none; flex: 1; padding: 10px 15px; background: #f0f0f0; border-radius: 5px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <div style="flex: 1; background: #ddd; height: 30px; border-radius: 15px; overflow: hidden; position: relative;">
-                    <div id="progressBar" style="width: 0%; height: 100%; background: linear-gradient(to right, #F5D02A, #199800); transition: width 0.3s ease;"></div>
-                    <div id="progressYear" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 16px; color: #333; text-shadow: 0 0 3px white;"></div>
+    <div class="container">
+        <h1>Where I've Been</h1>
+        <div class="controls-container">
+            <div class="control-group">
+                <label for="yearFilter">Filter by year:</label>
+                <select id="yearFilter">
+                    <option value="all">All Years</option>
+                </select>
+                <button id="animateBtn">Animate by Visit Order</button>
+            </div>
+            <div id="progressContainer">
+                <div class="progress-wrapper">
+                    <div class="progress-bar-container" id="progressBarContainer">
+                        <div id="progressBar"></div>
+                        <div id="progressYear"></div>
+                    </div>
+                    <div id="progressText"></div>
                 </div>
-                <div id="progressText" style="min-width: 100px; text-align: right; font-size: 14px; white-space: nowrap;"></div>
             </div>
         </div>
+        <div id="map1"></div>
     </div>
-    <div id="map1" style="position: relative; width: 100%; height: 700px;"></div>
 
     <script src="countries.js"></script>
     <script src="cities.js"></script>
 
     <script>
-    // Extract all unique years and sort them (using first year for countries with multiple visits)
-    function getUniqueYears() {
+    // Extract all unique years from all visits and sort them
+    function getAllYears() {
         const years = new Set();
         Object.values(COUNTRIES).forEach(country => {
             if (country.years && country.years.length > 0) {
-                years.add(country.years[0]); // Use first year for UI
+                country.years.forEach(year => years.add(year));
             }
         });
         return Array.from(years).sort((a, b) => a - b);
@@ -60,8 +225,8 @@
 
     // Populate year filter dropdown
     const yearFilter = document.getElementById('yearFilter');
-    const years = getUniqueYears();
-    years.forEach(year => {
+    const allYears = getAllYears();
+    allYears.forEach(year => {
         const option = document.createElement('option');
         option.value = year;
         option.textContent = year;
@@ -70,6 +235,12 @@
 
     // Store original data
     const ORIGINAL_COUNTRIES = JSON.parse(JSON.stringify(COUNTRIES));
+
+    // Timeline state
+    let minYear = allYears.length > 0 ? allYears[0] : new Date().getFullYear();
+    let maxYear = allYears.length > 0 ? allYears[allYears.length - 1] : new Date().getFullYear();
+    let currentYear = maxYear;
+    let isAnimating = false;
 
     // Create the map
     var map = new Datamap({
@@ -102,7 +273,7 @@
         data: COUNTRIES
     });
 
-    // Filter countries by year (using first year for filtering)
+    // Filter countries by year (checks if year exists in any visit)
     function filterByYear(year) {
         Object.keys(COUNTRIES).forEach(code => {
             const country = ORIGINAL_COUNTRIES[code];
@@ -113,7 +284,8 @@
             } else if (year === 'all') {
                 COUNTRIES[code] = country;
             } else {
-                if (country.years && country.years[0] && country.years[0].toString() === year) {
+                // Check if the selected year exists anywhere in the years array
+                if (country.years && country.years.some(y => y.toString() === year)) {
                     COUNTRIES[code] = country;
                 } else {
                     COUNTRIES[code] = {fillKey: 'defaultFill'};
@@ -123,10 +295,91 @@
         map.updateChoropleth(COUNTRIES);
     }
 
+    // Update map to show countries up to a specific year
+    function updateMapToYear(year) {
+        currentYear = year;
+        Object.keys(COUNTRIES).forEach(code => {
+            const country = ORIGINAL_COUNTRIES[code];
+
+            // Always keep home countries visible
+            if (country.fillKey === 'home') {
+                COUNTRIES[code] = country;
+            } else if (country.years && country.years.length > 0) {
+                // Show if first visit year is <= current year
+                if (country.years[0] <= year) {
+                    COUNTRIES[code] = country;
+                } else {
+                    COUNTRIES[code] = {fillKey: 'defaultFill'};
+                }
+            } else {
+                COUNTRIES[code] = {fillKey: 'defaultFill'};
+            }
+        });
+        map.updateChoropleth(COUNTRIES);
+        updateProgressBar();
+    }
+
+    // Update progress bar display
+    function updateProgressBar() {
+        const progressBar = document.getElementById('progressBar');
+        const progressYear = document.getElementById('progressYear');
+        const progressText = document.getElementById('progressText');
+
+        const yearRange = maxYear - minYear;
+        const progress = yearRange > 0 ? ((currentYear - minYear) / yearRange) * 100 : 100;
+
+        progressBar.style.width = progress + '%';
+        progressYear.textContent = currentYear;
+
+        // Count unique countries visited by their first visit year (including home)
+        const visibleCount = Object.entries(ORIGINAL_COUNTRIES).filter(([code, country]) =>
+            (country.fillKey === 'visited' && country.years && country.years.length > 0 && country.years[0] <= currentYear) ||
+            country.fillKey === 'home'
+        ).length;
+        progressText.textContent = visibleCount + ' unique countries';
+    }
+
     // Year filter event listener
     yearFilter.addEventListener('change', function() {
-        filterByYear(this.value);
+        if (this.value === 'all') {
+            currentYear = maxYear;
+            updateMapToYear(maxYear);
+        } else {
+            filterByYear(this.value);
+        }
     });
+
+    // Mouse interaction for progress bar
+    const progressBarContainer = document.getElementById('progressBarContainer');
+    let isDragging = false;
+
+    function handleProgressBarClick(e) {
+        if (isAnimating) return;
+
+        const rect = progressBarContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const percentage = Math.max(0, Math.min(1, x / rect.width));
+
+        const year = Math.round(minYear + (maxYear - minYear) * percentage);
+        updateMapToYear(year);
+    }
+
+    progressBarContainer.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        handleProgressBarClick(e);
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging && !isAnimating) {
+            handleProgressBarClick(e);
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+    });
+
+    progressBarContainer.addEventListener('click', handleProgressBarClick);
 
     // Pop animation function for re-visited countries
     function popCountry(code, originalData) {
@@ -141,9 +394,13 @@
         }, 300);
     }
 
-    // Animate countries in visit order (by first year)
+    // Animate countries in visit order
     document.getElementById('animateBtn').addEventListener('click', function() {
-        // Reset all countries to default, except home countries
+        if (isAnimating) return;
+
+        isAnimating = true;
+
+        // Reset map to show only home country
         Object.keys(COUNTRIES).forEach(code => {
             const country = ORIGINAL_COUNTRIES[code];
             if (country.fillKey === 'home') {
@@ -153,6 +410,10 @@
             }
         });
         map.updateChoropleth(COUNTRIES);
+
+        // Set progress bar to start
+        currentYear = minYear - 1; // Before first visit
+        updateProgressBar();
 
         // Create a flat list of all visits (country, year) pairs
         const allVisits = [];
@@ -167,44 +428,29 @@
         // Sort all visits chronologically
         allVisits.sort((a, b) => a.year - b.year);
 
-        // Show progress container
-        const progressContainer = document.getElementById('progressContainer');
-        const progressBar = document.getElementById('progressBar');
-        const progressYear = document.getElementById('progressYear');
-        const progressText = document.getElementById('progressText');
-
-        progressContainer.style.display = 'block';
-        progressBar.style.width = '0%';
-        progressYear.textContent = '';
-        progressText.textContent = '0 / ' + allVisits.length + ' visits';
-
         // Track which countries have already been visited
         const visitedCountries = new Set();
 
         // Animate each visit
         allVisits.forEach((visit, index) => {
             setTimeout(() => {
+                currentYear = visit.year;
+
                 if (visitedCountries.has(visit.code)) {
                     // Country already visited - trigger pop animation
                     popCountry(visit.code, visit.data);
+                    updateProgressBar();
                 } else {
                     // First visit - show country normally
                     COUNTRIES[visit.code] = visit.data;
                     map.updateChoropleth(COUNTRIES);
                     visitedCountries.add(visit.code);
+                    updateProgressBar();
                 }
 
-                // Update progress bar
-                const progress = ((index + 1) / allVisits.length) * 100;
-                progressBar.style.width = progress + '%';
-                progressYear.textContent = visit.year;
-                progressText.textContent = (index + 1) + ' / ' + allVisits.length + ' visits';
-
-                // Hide progress bar after animation completes
+                // End animation
                 if (index === allVisits.length - 1) {
-                    setTimeout(() => {
-                        progressContainer.style.display = 'none';
-                    }, 2000);
+                    isAnimating = false;
                 }
             }, index * 500); // 500ms delay between each visit
         });
@@ -270,6 +516,9 @@
     window.addEventListener('resize', function() {
         map.resize();
     });
+
+    // Initialize progress bar to show all countries
+    updateMapToYear(maxYear);
 
     </script>
 </body>
