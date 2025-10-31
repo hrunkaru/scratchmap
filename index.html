@@ -23,12 +23,54 @@
 </head>
 <body>
     <h1>Visited Places</h1>
+    <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 20px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <label for="yearFilter">Filter by year: </label>
+            <select id="yearFilter">
+                <option value="all">All Years</option>
+            </select>
+            <button id="animateBtn">Animate by Visit Order</button>
+        </div>
+        <div id="progressContainer" style="display: none; flex: 1; padding: 10px 15px; background: #f0f0f0; border-radius: 5px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="flex: 1; background: #ddd; height: 30px; border-radius: 15px; overflow: hidden; position: relative;">
+                    <div id="progressBar" style="width: 0%; height: 100%; background: linear-gradient(to right, #F5D02A, #199800); transition: width 0.3s ease;"></div>
+                    <div id="progressYear" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; font-size: 16px; color: #333; text-shadow: 0 0 3px white;"></div>
+                </div>
+                <div id="progressText" style="min-width: 100px; text-align: right; font-size: 14px; white-space: nowrap;"></div>
+            </div>
+        </div>
+    </div>
     <div id="map1" style="position: relative; width: 100%; height: 700px;"></div>
 
     <script src="countries.js"></script>
     <script src="cities.js"></script>
 
     <script>
+    // Extract all unique years and sort them (using first year for countries with multiple visits)
+    function getUniqueYears() {
+        const years = new Set();
+        Object.values(COUNTRIES).forEach(country => {
+            if (country.years && country.years.length > 0) {
+                years.add(country.years[0]); // Use first year for UI
+            }
+        });
+        return Array.from(years).sort((a, b) => a - b);
+    }
+
+    // Populate year filter dropdown
+    const yearFilter = document.getElementById('yearFilter');
+    const years = getUniqueYears();
+    years.forEach(year => {
+        const option = document.createElement('option');
+        option.value = year;
+        option.textContent = year;
+        yearFilter.appendChild(option);
+    });
+
+    // Store original data
+    const ORIGINAL_COUNTRIES = JSON.parse(JSON.stringify(COUNTRIES));
+
     // Create the map
     var map = new Datamap({
         scope: 'world',
@@ -39,6 +81,8 @@
         fills: {
             defaultFill: '#B0B0B0',
             visited: '#F5D02A',
+            visitedDark: '#C4A922',
+            home: '#199800',
             city: '#B5F52A'
         },
         geographyConfig: {
@@ -47,10 +91,123 @@
             highlightBorderColor: '#F0F0F0',
             popupOnHover: true,
             popupTemplate: function(geography, data) {
-                return '<div class="hoverinfo"><b>' + geography.properties.name + '</b></div>';
+                let html = '<div class="hoverinfo"><b>' + geography.properties.name + '</b>';
+                if (data && data.years && data.years.length > 0) {
+                    html += '<br/>Visited: ' + data.years.join(', ');
+                }
+                html += '</div>';
+                return html;
             },
         },
         data: COUNTRIES
+    });
+
+    // Filter countries by year (using first year for filtering)
+    function filterByYear(year) {
+        Object.keys(COUNTRIES).forEach(code => {
+            const country = ORIGINAL_COUNTRIES[code];
+
+            // Always keep home countries visible
+            if (country.fillKey === 'home') {
+                COUNTRIES[code] = country;
+            } else if (year === 'all') {
+                COUNTRIES[code] = country;
+            } else {
+                if (country.years && country.years[0] && country.years[0].toString() === year) {
+                    COUNTRIES[code] = country;
+                } else {
+                    COUNTRIES[code] = {fillKey: 'defaultFill'};
+                }
+            }
+        });
+        map.updateChoropleth(COUNTRIES);
+    }
+
+    // Year filter event listener
+    yearFilter.addEventListener('change', function() {
+        filterByYear(this.value);
+    });
+
+    // Pop animation function for re-visited countries
+    function popCountry(code, originalData) {
+        // Flash to darker color
+        COUNTRIES[code] = {...originalData, fillKey: 'visitedDark'};
+        map.updateChoropleth(COUNTRIES);
+
+        // Return to original color after 300ms
+        setTimeout(() => {
+            COUNTRIES[code] = originalData;
+            map.updateChoropleth(COUNTRIES);
+        }, 300);
+    }
+
+    // Animate countries in visit order (by first year)
+    document.getElementById('animateBtn').addEventListener('click', function() {
+        // Reset all countries to default, except home countries
+        Object.keys(COUNTRIES).forEach(code => {
+            const country = ORIGINAL_COUNTRIES[code];
+            if (country.fillKey === 'home') {
+                COUNTRIES[code] = country;
+            } else {
+                COUNTRIES[code] = {fillKey: 'defaultFill'};
+            }
+        });
+        map.updateChoropleth(COUNTRIES);
+
+        // Create a flat list of all visits (country, year) pairs
+        const allVisits = [];
+        Object.entries(ORIGINAL_COUNTRIES).forEach(([code, data]) => {
+            if (data.years && data.years.length > 0 && data.fillKey !== 'home') {
+                data.years.forEach(year => {
+                    allVisits.push({code, data, year});
+                });
+            }
+        });
+
+        // Sort all visits chronologically
+        allVisits.sort((a, b) => a.year - b.year);
+
+        // Show progress container
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressYear = document.getElementById('progressYear');
+        const progressText = document.getElementById('progressText');
+
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressYear.textContent = '';
+        progressText.textContent = '0 / ' + allVisits.length + ' visits';
+
+        // Track which countries have already been visited
+        const visitedCountries = new Set();
+
+        // Animate each visit
+        allVisits.forEach((visit, index) => {
+            setTimeout(() => {
+                if (visitedCountries.has(visit.code)) {
+                    // Country already visited - trigger pop animation
+                    popCountry(visit.code, visit.data);
+                } else {
+                    // First visit - show country normally
+                    COUNTRIES[visit.code] = visit.data;
+                    map.updateChoropleth(COUNTRIES);
+                    visitedCountries.add(visit.code);
+                }
+
+                // Update progress bar
+                const progress = ((index + 1) / allVisits.length) * 100;
+                progressBar.style.width = progress + '%';
+                progressYear.textContent = visit.year;
+                progressText.textContent = (index + 1) + ' / ' + allVisits.length + ' visits';
+
+                // Hide progress bar after animation completes
+                if (index === allVisits.length - 1) {
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 2000);
+                }
+            }, index * 500); // 500ms delay between each visit
+        });
     });
 
     // Append the cities and the map to separate groups for zooming

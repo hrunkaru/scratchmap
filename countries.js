@@ -2,10 +2,10 @@
 COUNTRIES = {
     AFG: {fillKey: 'defaultFill'}, // Afghanistan
     ALA: {fillKey: 'defaultFill'}, // Åland Islands
-    ALB: {fillKey: 'visited'}, // Albania
+    ALB: {fillKey: 'defaultFill'}, // Albania
     DZA: {fillKey: 'defaultFill'}, // Algeria
     ASM: {fillKey: 'defaultFill'}, // American Samoa
-    AND: {fillKey: 'visited'}, // Andorra
+    AND: {fillKey: 'visited', years: [2025]}, // Andorra
     AGO: {fillKey: 'defaultFill'}, // Angola
     AIA: {fillKey: 'defaultFill'}, // Anguilla
     ATA: {fillKey: 'defaultFill'}, // Antarctica
@@ -14,27 +14,27 @@ COUNTRIES = {
     ARM: {fillKey: 'defaultFill'}, // Armenia
     ABW: {fillKey: 'defaultFill'}, // Aruba
     AUS: {fillKey: 'defaultFill'}, // Australia
-    AUT: {fillKey: 'visited'}, // Austria
+    AUT: {fillKey: 'visited', years: [2022, 2023, 2024]}, // Austria
     AZE: {fillKey: 'defaultFill'}, // Azerbaijan
     BHS: {fillKey: 'defaultFill'}, // Bahamas
     BHR: {fillKey: 'defaultFill'}, // Bahrain
     BGD: {fillKey: 'defaultFill'}, // Bangladesh
     BRB: {fillKey: 'defaultFill'}, // Barbados
     BLR: {fillKey: 'defaultFill'}, // Belarus
-    BEL: {fillKey: 'visited'}, // Belgium
+    BEL: {fillKey: 'visited', years: [2025]}, // Belgium
     BLZ: {fillKey: 'defaultFill'}, // Belize
     BEN: {fillKey: 'defaultFill'}, // Benin
     BMU: {fillKey: 'defaultFill'}, // Bermuda
     BTN: {fillKey: 'defaultFill'}, // Bhutan
     BOL: {fillKey: 'defaultFill'}, // Bolivia (Plurinational State of)
     BES: {fillKey: 'defaultFill'}, // Bonaire, Sint Eustatius and Saba
-    BIH: {fillKey: 'visited'}, // Bosnia and Herzegovina
+    BIH: {fillKey: 'visited', years: [2023]}, // Bosnia and Herzegovina
     BWA: {fillKey: 'defaultFill'}, // Botswana
     BVT: {fillKey: 'defaultFill'}, // Bouvet Island
     BRA: {fillKey: 'defaultFill'}, // Brazil
     IOT: {fillKey: 'defaultFill'}, // British Indian Ocean Territory
     BRN: {fillKey: 'defaultFill'}, // Brunei Darussalam
-    BGR: {fillKey: 'visited'}, // Bulgaria
+    BGR: {fillKey: 'visited', years: [2025]}, // Bulgaria
     BFA: {fillKey: 'defaultFill'}, // Burkina Faso
     BDI: {fillKey: 'defaultFill'}, // Burundi
     CPV: {fillKey: 'defaultFill'}, // Cabo Verde
@@ -54,38 +54,38 @@ COUNTRIES = {
     COD: {fillKey: 'defaultFill'}, // Congo (Democratic Republic of the)
     COK: {fillKey: 'defaultFill'}, // Cook Islands
     CRI: {fillKey: 'defaultFill'}, // Costa Rica
-    HRV: {fillKey: 'visited'}, // Croatia
+    HRV: {fillKey: 'visited', years: [2018, 2023]}, // Croatia
     CUB: {fillKey: 'defaultFill'}, // Cuba
     CUW: {fillKey: 'defaultFill'}, // Curaçao
     CYP: {fillKey: 'defaultFill'}, // Cyprus
-    CZE: {fillKey: 'visited'}, // Czechia
-    DNK: {fillKey: 'visited'}, // Denmark
+    CZE: {fillKey: 'visited', years: [2011, 2025]}, // Czechia
+    DNK: {fillKey: 'visited', years: [2025]}, // Denmark
     DJI: {fillKey: 'defaultFill'}, // Djibouti
     DMA: {fillKey: 'defaultFill'}, // Dominica
     DOM: {fillKey: 'defaultFill'}, // Dominican Republic
     ECU: {fillKey: 'defaultFill'}, // Ecuador
-    EGY: {fillKey: 'visited'}, // Egypt
+    EGY: {fillKey: 'visited', years: [2024]}, // Egypt
     SLV: {fillKey: 'defaultFill'}, // El Salvador
     GNQ: {fillKey: 'defaultFill'}, // Equatorial Guinea
     ERI: {fillKey: 'defaultFill'}, // Eritrea
-    EST: {fillKey: 'visited'}, // Estonia
+    EST: {fillKey: 'home'}, // Estonia
     SWZ: {fillKey: 'defaultFill'}, // Eswatini
     ETH: {fillKey: 'defaultFill'}, // Ethiopia
     FLK: {fillKey: 'defaultFill'}, // Falkland Islands [Malvinas]
     FRO: {fillKey: 'defaultFill'}, // Faroe Islands
     FJI: {fillKey: 'defaultFill'}, // Fiji
-    FIN: {fillKey: 'visited'}, // Finland
-    FRA: {fillKey: 'visited'}, // France
+    FIN: {fillKey: 'visited', years: [2014, 2019, 2020, 2022, 2023, 2024, 2025]}, // Finland
+    FRA: {fillKey: 'visited', years: [2025]}, // France
     GUF: {fillKey: 'defaultFill'}, // French Guiana
     PYF: {fillKey: 'defaultFill'}, // French Polynesia
     ATF: {fillKey: 'defaultFill'}, // French Southern Territories
     GAB: {fillKey: 'defaultFill'}, // Gabon
     GMB: {fillKey: 'defaultFill'}, // Gambia
     GEO: {fillKey: 'defaultFill'}, // Georgia
-    DEU: {fillKey: 'visited'}, // Germany
+    DEU: {fillKey: 'visited', years: [2024, 2025]}, // Germany
     GHA: {fillKey: 'defaultFill'}, // Ghana
     GIB: {fillKey: 'defaultFill'}, // Gibraltar
-    GRC: {fillKey: 'visited'}, // Greece
+    GRC: {fillKey: 'visited', years: [2024]}, // Greece
     GRL: {fillKey: 'defaultFill'}, // Greenland
     GRD: {fillKey: 'defaultFill'}, // Grenada
     GLP: {fillKey: 'defaultFill'}, // Guadeloupe
@@ -100,7 +100,7 @@ COUNTRIES = {
     VAT: {fillKey: 'defaultFill'}, // Holy See
     HND: {fillKey: 'defaultFill'}, // Honduras
     HKG: {fillKey: 'defaultFill'}, // Hong Kong
-    HUN: {fillKey: 'visited'}, // Hungary
+    HUN: {fillKey: 'visited', years: [2024]}, // Hungary
     ISL: {fillKey: 'defaultFill'}, // Iceland
     IND: {fillKey: 'defaultFill'}, // India
     IDN: {fillKey: 'defaultFill'}, // Indonesia
@@ -109,7 +109,7 @@ COUNTRIES = {
     IRL: {fillKey: 'defaultFill'}, // Ireland
     IMN: {fillKey: 'defaultFill'}, // Isle of Man
     ISR: {fillKey: 'defaultFill'}, // Israel
-    ITA: {fillKey: 'visited'}, // Italy
+    ITA: {fillKey: 'visited', years: [2021, 2022, 2023, 2024]}, // Italy
     JAM: {fillKey: 'defaultFill'}, // Jamaica
     JPN: {fillKey: 'defaultFill'}, // Japan
     JEY: {fillKey: 'defaultFill'}, // Jersey
@@ -122,21 +122,21 @@ COUNTRIES = {
     KWT: {fillKey: 'defaultFill'}, // Kuwait
     KGZ: {fillKey: 'defaultFill'}, // Kyrgyzstan
     LAO: {fillKey: 'defaultFill'}, // Lao People's Democratic Republic
-    LVA: {fillKey: 'visited'}, // Latvia
+    LVA: {fillKey: 'visited', years: [2014, 2018, 2021, 2022, 2023, 2024, 2025]}, // Latvia
     LBN: {fillKey: 'defaultFill'}, // Lebanon
     LSO: {fillKey: 'defaultFill'}, // Lesotho
     LBR: {fillKey: 'defaultFill'}, // Liberia
     LBY: {fillKey: 'defaultFill'}, // Libya
     LIE: {fillKey: 'defaultFill'}, // Liechtenstein
-    LTU: {fillKey: 'visited'}, // Lithuania
-    LUX: {fillKey: 'visited'}, // Luxembourg
+    LTU: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Lithuania
+    LUX: {fillKey: 'visited', years: [2025]}, // Luxembourg
     MAC: {fillKey: 'defaultFill'}, // Macao
     MDG: {fillKey: 'defaultFill'}, // Madagascar
     MWI: {fillKey: 'defaultFill'}, // Malawi
     MYS: {fillKey: 'defaultFill'}, // Malaysia
     MDV: {fillKey: 'defaultFill'}, // Maldives
     MLI: {fillKey: 'defaultFill'}, // Mali
-    MLT: {fillKey: 'visited'}, // Malta
+    MLT: {fillKey: 'visited', years: [2024]}, // Malta
     MHL: {fillKey: 'defaultFill'}, // Marshall Islands
     MTQ: {fillKey: 'defaultFill'}, // Martinique
     MRT: {fillKey: 'defaultFill'}, // Mauritania
@@ -147,7 +147,7 @@ COUNTRIES = {
     MDA: {fillKey: 'defaultFill'}, // Moldova (Republic of)
     MCO: {fillKey: 'defaultFill'}, // Monaco
     MNG: {fillKey: 'defaultFill'}, // Mongolia
-    MNE: {fillKey: 'visited'}, // Montenegro
+    MNE: {fillKey: 'visited', years: [2023]}, // Montenegro
     MSR: {fillKey: 'defaultFill'}, // Montserrat
     MAR: {fillKey: 'defaultFill'}, // Morocco
     MOZ: {fillKey: 'defaultFill'}, // Mozambique
@@ -155,7 +155,7 @@ COUNTRIES = {
     NAM: {fillKey: 'defaultFill'}, // Namibia
     NRU: {fillKey: 'defaultFill'}, // Nauru
     NPL: {fillKey: 'defaultFill'}, // Nepal
-    NLD: {fillKey: 'visited'}, // Netherlands
+    NLD: {fillKey: 'visited', years: [2017]}, // Netherlands
     NCL: {fillKey: 'defaultFill'}, // New Caledonia
     NZL: {fillKey: 'defaultFill'}, // New Zealand
     NIC: {fillKey: 'defaultFill'}, // Nicaragua
@@ -165,7 +165,7 @@ COUNTRIES = {
     NFK: {fillKey: 'defaultFill'}, // Norfolk Island
     MKD: {fillKey: 'defaultFill'}, // North Macedonia
     MNP: {fillKey: 'defaultFill'}, // Northern Mariana Islands
-    NOR: {fillKey: 'visited'}, // Norway
+    NOR: {fillKey: 'visited', years: [2016]}, // Norway
     OMN: {fillKey: 'defaultFill'}, // Oman
     PAK: {fillKey: 'defaultFill'}, // Pakistan
     PLW: {fillKey: 'defaultFill'}, // Palau
@@ -176,13 +176,13 @@ COUNTRIES = {
     PER: {fillKey: 'defaultFill'}, // Peru
     PHL: {fillKey: 'defaultFill'}, // Philippines
     PCN: {fillKey: 'defaultFill'}, // Pitcairn
-    POL: {fillKey: 'visited'}, // Poland
+    POL: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Poland
     PRT: {fillKey: 'defaultFill'}, // Portugal
     PRI: {fillKey: 'defaultFill'}, // Puerto Rico
     QAT: {fillKey: 'defaultFill'}, // Qatar
     REU: {fillKey: 'defaultFill'}, // Réunion
-    ROU: {fillKey: 'visited'}, // Romania
-    RUS: {fillKey: 'visited'}, // Russian Federation
+    ROU: {fillKey: 'visited', years: [2025]}, // Romania
+    RUS: {fillKey: 'visited', years: [2003]}, // Russian Federation
     RWA: {fillKey: 'defaultFill'}, // Rwanda
     BLM: {fillKey: 'defaultFill'}, // Saint Barthélemy
     SHN: {fillKey: 'defaultFill'}, // Saint Helena, Ascension and Tristan da Cunha
@@ -196,13 +196,13 @@ COUNTRIES = {
     STP: {fillKey: 'defaultFill'}, // Sao Tome and Principe
     SAU: {fillKey: 'defaultFill'}, // Saudi Arabia
     SEN: {fillKey: 'defaultFill'}, // Senegal
-    SRB: {fillKey: 'visited'}, // Serbia
+    SRB: {fillKey: 'visited', years: [2023]}, // Serbia
     SYC: {fillKey: 'defaultFill'}, // Seychelles
     SLE: {fillKey: 'defaultFill'}, // Sierra Leone
-    SGP: {fillKey: 'visited'}, // Singapore
+    SGP: {fillKey: 'visited', years: [2023]}, // Singapore
     SXM: {fillKey: 'defaultFill'}, // Sint Maarten (Dutch part)
-    SVK: {fillKey: 'visited'}, // Slovakia
-    SVN: {fillKey: 'visited'}, // Slovenia
+    SVK: {fillKey: 'visited', years: [2015, 2017]}, // Slovakia
+    SVN: {fillKey: 'visited', years: [2024]}, // Slovenia
     SLB: {fillKey: 'defaultFill'}, // Solomon Islands
     SOM: {fillKey: 'defaultFill'}, // Somalia
     ZAF: {fillKey: 'defaultFill'}, // South Africa
@@ -213,13 +213,13 @@ COUNTRIES = {
     SDN: {fillKey: 'defaultFill'}, // Sudan
     SUR: {fillKey: 'defaultFill'}, // Suriname
     SJM: {fillKey: 'defaultFill'}, // Svalbard and Jan Mayen
-    SWE: {fillKey: 'visited'}, // Sweden
+    SWE: {fillKey: 'visited', years: [2015, 2018]}, // Sweden
     CHE: {fillKey: 'defaultFill'}, // Switzerland
     SYR: {fillKey: 'defaultFill'}, // Syrian Arab Republic
     TWN: {fillKey: 'defaultFill'}, // Taiwan, Province of China
     TJK: {fillKey: 'defaultFill'}, // Tajikistan
     TZA: {fillKey: 'defaultFill'}, // Tanzania, United Republic of
-    THA: {fillKey: 'visited'}, // Thailand
+    THA: {fillKey: 'visited', years: [2023]}, // Thailand
     TLS: {fillKey: 'defaultFill'}, // Timor-Leste
     TGO: {fillKey: 'defaultFill'}, // Togo
     TKL: {fillKey: 'defaultFill'}, // Tokelau
@@ -234,13 +234,13 @@ COUNTRIES = {
     UKR: {fillKey: 'defaultFill'}, // Ukraine
     ARE: {fillKey: 'defaultFill'}, // United Arab Emirates
     GBR: {fillKey: 'defaultFill'}, // United Kingdom of Great Britain and Northern Ireland
-    USA: {fillKey: 'visited'}, // United States of America
+    USA: {fillKey: 'visited', years: [2017, 2025]}, // United States of America
     UMI: {fillKey: 'defaultFill'}, // United States Minor Outlying Islands
     URY: {fillKey: 'defaultFill'}, // Uruguay
     UZB: {fillKey: 'defaultFill'}, // Uzbekistan
     VUT: {fillKey: 'defaultFill'}, // Vanuatu
     VEN: {fillKey: 'defaultFill'}, // Venezuela (Bolivarian Republic of)
-    VNM: {fillKey: 'visited'}, // Viet Nam
+    VNM: {fillKey: 'visited', years: [2023]}, // Viet Nam
     WLF: {fillKey: 'defaultFill'}, // Wallis and Futuna
     ESH: {fillKey: 'defaultFill'}, // Western Sahara
     YEM: {fillKey: 'defaultFill'}, // Yemen
