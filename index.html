@@ -182,6 +182,111 @@
             z-index: 1000;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
+
+        /* Mobile responsive styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            h1 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+
+            .controls-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                margin-bottom: 12px;
+                min-height: auto;
+            }
+
+            .control-group {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            select {
+                padding: 12px 16px;
+                font-size: 16px;
+                width: 100%;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 16px;
+                width: 100%;
+            }
+
+            #progressContainer {
+                min-width: auto;
+                width: 100%;
+                padding: 10px 12px;
+            }
+
+            .progress-bar-container {
+                height: 32px;
+            }
+
+            #progressYear {
+                font-size: 15px;
+            }
+
+            #progressText {
+                font-size: 13px;
+                min-width: auto;
+            }
+
+            #map1 {
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 16px;
+            }
+
+            select, button {
+                padding: 14px 18px;
+                font-size: 16px;
+            }
+
+            #progressContainer {
+                padding: 12px;
+            }
+
+            .progress-bar-container {
+                height: 36px;
+            }
+
+            #progressYear {
+                font-size: 16px;
+            }
+
+            #progressText {
+                font-size: 14px;
+            }
+
+            #map1 {
+                height: 400px;
+            }
+        }
     </style>
 </head>
 <body>
