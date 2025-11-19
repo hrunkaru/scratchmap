@@ -937,22 +937,33 @@
         const totalCountries = 195; // Approximate
         const percentage = Math.round((visited.length / totalCountries) * 100);
 
-        animateValue('statCountries', 0, visited.length, 300);
-        animateValue('statContinents', 0, continents.size, 300);
-        animateValue('statYears', 0, yearsSpan, 300);
-        animateValue('statPercent', 0, percentage, 300, '%');
+        animateValue('statCountries', visited.length, 300);
+        animateValue('statContinents', continents.size, 300);
+        animateValue('statYears', yearsSpan, 300);
+        animateValue('statPercent', percentage, 300, '%');
     }
 
-    function animateValue(id, start, end, duration, suffix = '') {
+    function animateValue(id, targetValue, duration, suffix = '') {
         const element = document.getElementById(id);
-        const range = end - start;
+
+        // Get current value from element, removing any suffix
+        const currentText = element.textContent.replace(suffix, '').trim();
+        const currentValue = parseInt(currentText) || 0;
+
+        // If no change needed, just update and return
+        if (currentValue === targetValue) {
+            element.textContent = targetValue + suffix;
+            return;
+        }
+
+        const range = targetValue - currentValue;
         const increment = range / (duration / 16);
-        let current = start;
+        let current = currentValue;
 
         const timer = setInterval(() => {
             current += increment;
-            if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
-                current = end;
+            if ((increment > 0 && current >= targetValue) || (increment < 0 && current <= targetValue)) {
+                current = targetValue;
                 clearInterval(timer);
             }
             element.textContent = Math.floor(current) + suffix;
