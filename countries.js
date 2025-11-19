@@ -177,7 +177,7 @@ COUNTRIES = {
     PHL: {fillKey: 'defaultFill'}, // Philippines
     PCN: {fillKey: 'defaultFill'}, // Pitcairn
     POL: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Poland
-    PRT: {fillKey: 'defaultFill'}, // Portugal
+    PRT: {fillKey: 'visited', years: [2025]}, // Portugal
     PRI: {fillKey: 'defaultFill'}, // Puerto Rico
     QAT: {fillKey: 'defaultFill'}, // Qatar
     REU: {fillKey: 'defaultFill'}, // Réunion
