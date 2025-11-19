@@ -918,8 +918,9 @@
     // Update statistics with animations
     function updateStatistics() {
         // Get currently visible countries (based on filters)
+        // Include 'visitedDark' to handle countries during pop animation
         const visited = Object.entries(COUNTRIES).filter(([code, c]) =>
-            c.fillKey === 'visited' || c.fillKey === 'home'
+            c.fillKey === 'visited' || c.fillKey === 'visitedDark' || c.fillKey === 'home'
         );
 
         // Calculate continents from visible countries
@@ -986,8 +987,9 @@
         const searchTerm = currentFilters.search.toLowerCase();
 
         // Show currently visible countries (based on all active filters and timeline)
+        // Include 'visitedDark' to handle countries during pop animation
         const visited = Object.entries(COUNTRIES)
-            .filter(([code, c]) => c.fillKey === 'visited' || c.fillKey === 'home')
+            .filter(([code, c]) => c.fillKey === 'visited' || c.fillKey === 'visitedDark' || c.fillKey === 'home')
             .map(([code, c]) => ({
                 code,
                 name: getCountryName(code),
@@ -1096,8 +1098,9 @@
         timelineYear.textContent = currentYear;
 
         // Count currently visible countries
+        // Include 'visitedDark' to handle countries during pop animation
         const visibleCount = Object.entries(COUNTRIES).filter(([code, country]) =>
-            country.fillKey === 'visited' || country.fillKey === 'home'
+            country.fillKey === 'visited' || country.fillKey === 'visitedDark' || country.fillKey === 'home'
         ).length;
         timelineCount.textContent = visibleCount + ' countries';
 
