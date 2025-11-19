@@ -213,7 +213,7 @@ COUNTRIES = {
     SDN: {fillKey: 'defaultFill'}, // Sudan
     SUR: {fillKey: 'defaultFill'}, // Suriname
     SJM: {fillKey: 'defaultFill'}, // Svalbard and Jan Mayen
-    SWE: {fillKey: 'visited', years: [2015, 2018]}, // Sweden
+    SWE: {fillKey: 'visited', years: [2015, 2018, 2025]}, // Sweden
     CHE: {fillKey: 'defaultFill'}, // Switzerland
     SYR: {fillKey: 'defaultFill'}, // Syrian Arab Republic
     TWN: {fillKey: 'defaultFill'}, // Taiwan, Province of China
