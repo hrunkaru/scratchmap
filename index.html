@@ -943,8 +943,17 @@
         animateValue('statPercent', percentage, 300, '%');
     }
 
+    // Store active animation timers to prevent overlapping animations
+    const activeAnimations = {};
+
     function animateValue(id, targetValue, duration, suffix = '') {
         const element = document.getElementById(id);
+
+        // Cancel any existing animation for this element
+        if (activeAnimations[id]) {
+            clearInterval(activeAnimations[id]);
+            delete activeAnimations[id];
+        }
 
         // Get current value from element, removing any suffix
         const currentText = element.textContent.replace(suffix, '').trim();
@@ -960,11 +969,12 @@
         const increment = range / (duration / 16);
         let current = currentValue;
 
-        const timer = setInterval(() => {
+        activeAnimations[id] = setInterval(() => {
             current += increment;
             if ((increment > 0 && current >= targetValue) || (increment < 0 && current <= targetValue)) {
                 current = targetValue;
-                clearInterval(timer);
+                clearInterval(activeAnimations[id]);
+                delete activeAnimations[id];
             }
             element.textContent = Math.floor(current) + suffix;
         }, 16);
