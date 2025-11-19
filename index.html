@@ -114,7 +114,7 @@
         }
 
         .header {
-            padding: 24px 32px;
+            padding: 16px 24px;
             border-bottom: 1px solid var(--border-primary);
             background: var(--bg-elevated);
         }
@@ -123,10 +123,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 16px;
         }
 
         h1 {
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 800;
             background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
             -webkit-background-clip: text;
@@ -135,8 +136,8 @@
         }
 
         .theme-toggle {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             border-radius: var(--radius-md);
             border: 1px solid var(--border-primary);
             background: var(--bg-tertiary);
@@ -145,7 +146,8 @@
             align-items: center;
             justify-content: center;
             transition: all var(--transition-base);
-            font-size: 20px;
+            font-size: 18px;
+            flex-shrink: 0;
         }
 
         .theme-toggle:hover {
@@ -155,25 +157,25 @@
         }
 
         .controls-section {
-            padding: 24px 32px;
+            padding: 12px 24px;
             background: var(--bg-elevated);
             border-bottom: 1px solid var(--border-primary);
         }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
         }
 
         .control-group {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
         label {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
@@ -181,10 +183,10 @@
         }
 
         select, input {
-            padding: 12px 16px;
+            padding: 8px 12px;
             border: 1px solid var(--border-primary);
             border-radius: var(--radius-sm);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
             background: var(--bg-secondary);
             color: var(--text-primary);
@@ -204,12 +206,12 @@
         }
 
         button {
-            padding: 12px 20px;
+            padding: 8px 16px;
             background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
             color: white;
             border: none;
             border-radius: var(--radius-sm);
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all var(--transition-base);
@@ -217,8 +219,8 @@
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         button:active {
@@ -226,40 +228,39 @@
         }
 
         .timeline-section {
-            padding: 16px 32px;
+            padding: 8px 24px 12px;
             background: var(--bg-secondary);
         }
 
         .timeline-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            position: relative;
         }
 
         .timeline-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 6px;
         }
 
         .timeline-year {
-            font-size: 24px;
+            font-size: 14px;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .timeline-count {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
         }
 
         .progress-bar-container {
             position: relative;
-            height: 40px;
+            height: 8px;
             background: var(--bg-tertiary);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
+            border-radius: 4px;
+            overflow: visible;
             cursor: pointer;
             border: 1px solid var(--border-primary);
         }
@@ -273,16 +274,21 @@
             background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
             transition: width var(--transition-slow);
             position: relative;
+            border-radius: 4px;
         }
 
         #progressBar::after {
             content: '';
             position: absolute;
-            top: 0;
+            top: 50%;
             right: 0;
-            bottom: 0;
-            width: 4px;
-            background: rgba(255, 255, 255, 0.5);
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            box-shadow: var(--shadow-sm);
         }
 
         #map1 {
@@ -478,24 +484,24 @@
 
         @media (max-width: 768px) {
             .header {
-                padding: 16px 20px;
+                padding: 12px 16px;
             }
 
             h1 {
-                font-size: 22px;
+                font-size: 20px;
             }
 
             .controls-section {
-                padding: 16px 20px;
+                padding: 10px 16px;
             }
 
             .controls-grid {
                 grid-template-columns: 1fr;
-                gap: 12px;
+                gap: 10px;
             }
 
             .timeline-section {
-                padding: 12px 20px;
+                padding: 8px 16px 10px;
             }
 
             .stats-section {
@@ -523,12 +529,13 @@
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .theme-toggle {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
             }
 
             .stats-grid {
@@ -636,7 +643,7 @@
                         <input type="number" id="dateRangeEnd" placeholder="End year">
                     </div>
                 </div>
-                <div style="margin-top: 16px;">
+                <div style="margin-top: 12px;">
                     <button id="animateBtn" style="width: 100%;">▶ Animate Journey</button>
                 </div>
             </div>
