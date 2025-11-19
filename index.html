@@ -917,19 +917,30 @@
 
     // Update statistics with animations
     function updateStatistics() {
-        const visited = Object.entries(ORIGINAL_COUNTRIES).filter(([code, c]) =>
+        // Get currently visible countries (based on filters)
+        const visited = Object.entries(COUNTRIES).filter(([code, c]) =>
             c.fillKey === 'visited' || c.fillKey === 'home'
         );
 
+        // Calculate continents from visible countries
         const continents = new Set(visited.map(([code]) => countryToContinentMap[code]).filter(Boolean));
-        const yearsSpan = allYears.length;
+
+        // Calculate unique years from visible countries
+        const visibleYears = new Set();
+        visited.forEach(([code, c]) => {
+            if (c.years && c.years.length > 0) {
+                c.years.forEach(year => visibleYears.add(year));
+            }
+        });
+        const yearsSpan = visibleYears.size;
+
         const totalCountries = 195; // Approximate
         const percentage = Math.round((visited.length / totalCountries) * 100);
 
-        animateValue('statCountries', 0, visited.length, 1000);
-        animateValue('statContinents', 0, continents.size, 1000);
-        animateValue('statYears', 0, yearsSpan, 1000);
-        animateValue('statPercent', 0, percentage, 1000, '%');
+        animateValue('statCountries', 0, visited.length, 300);
+        animateValue('statContinents', 0, continents.size, 300);
+        animateValue('statYears', 0, yearsSpan, 300);
+        animateValue('statPercent', 0, percentage, 300, '%');
     }
 
     function animateValue(id, start, end, duration, suffix = '') {
@@ -953,7 +964,8 @@
         const countriesList = document.getElementById('countriesList');
         const searchTerm = currentFilters.search.toLowerCase();
 
-        const visited = Object.entries(ORIGINAL_COUNTRIES)
+        // Show currently visible countries (based on all active filters and timeline)
+        const visited = Object.entries(COUNTRIES)
             .filter(([code, c]) => c.fillKey === 'visited' || c.fillKey === 'home')
             .map(([code, c]) => ({
                 code,
@@ -1062,11 +1074,15 @@
         progressBar.style.width = progress + '%';
         timelineYear.textContent = currentYear;
 
-        const visibleCount = Object.entries(ORIGINAL_COUNTRIES).filter(([code, country]) =>
-            (country.fillKey === 'visited' && country.years && country.years.length > 0 && country.years[0] <= currentYear) ||
-            country.fillKey === 'home'
+        // Count currently visible countries
+        const visibleCount = Object.entries(COUNTRIES).filter(([code, country]) =>
+            country.fillKey === 'visited' || country.fillKey === 'home'
         ).length;
         timelineCount.textContent = visibleCount + ' countries';
+
+        // Update statistics and countries list to reflect current state
+        updateStatistics();
+        updateCountriesList();
     }
 
     // Progress bar interaction
