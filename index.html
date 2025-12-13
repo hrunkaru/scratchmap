@@ -969,11 +969,16 @@
         // Calculate continents from visible countries
         const continents = new Set(visited.map(([code]) => countryToContinentMap[code]).filter(Boolean));
 
-        // Calculate unique years from visible countries
+        // Calculate unique years from visible countries (only within filter range)
         const visibleYears = new Set();
         visited.forEach(([code, c]) => {
             if (c.years && c.years.length > 0) {
-                c.years.forEach(year => visibleYears.add(year));
+                c.years.forEach(year => {
+                    // Only count years within the current filter range
+                    if (year >= currentFilters.dateStart && year <= currentFilters.dateEnd) {
+                        visibleYears.add(year);
+                    }
+                });
             }
         });
         const yearsSpan = visibleYears.size;
