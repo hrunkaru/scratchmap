@@ -3,11 +3,86 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Where I've Been</title>
+    <title>My Travel Map</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="d3/d3.v3.min.js"></script>
     <script src="d3/topojson.v1.min.js"></script>
     <script src="datamaps/datamaps.world.min.js"></script>
     <style>
+        :root {
+            /* Light mode colors */
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #F5F5F5;
+            --bg-elevated: #FFFFFF;
+
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --text-tertiary: #9CA3AF;
+
+            --border-primary: #E5E7EB;
+            --border-secondary: #F3F4F6;
+
+            --accent-primary: #4F46E5;
+            --accent-primary-hover: #4338CA;
+            --accent-secondary: #06B6D4;
+            --accent-gradient-start: #4F46E5;
+            --accent-gradient-end: #06B6D4;
+
+            --visited-color: #06B6D4;
+            --visited-gradient-start: #0891B2;
+            --visited-gradient-end: #06B6D4;
+            --home-color: #10B981;
+            --unvisited-color: #E5E7EB;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0F172A;
+            --bg-secondary: #1E293B;
+            --bg-tertiary: #334155;
+            --bg-elevated: #1E293B;
+
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-tertiary: #64748B;
+
+            --border-primary: #334155;
+            --border-secondary: #1E293B;
+
+            --accent-primary: #6366F1;
+            --accent-primary-hover: #818CF8;
+            --accent-secondary: #22D3EE;
+            --accent-gradient-start: #6366F1;
+            --accent-gradient-end: #22D3EE;
+
+            --visited-color: #22D3EE;
+            --visited-gradient-start: #0EA5E9;
+            --visited-gradient-end: #22D3EE;
+            --home-color: #34D399;
+            --unvisited-color: #334155;
+
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -15,325 +90,696 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #e0e0e0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            transition: background var(--transition-base), color var(--transition-base);
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: 100vh;
+            gap: 0;
+        }
+
+        /* Left Panel - Map */
+        .map-panel {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-primary);
+        }
+
+        .header {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-primary);
+            background: var(--bg-elevated);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
         }
 
         h1 {
-            font-size: 20px;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 15px;
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .controls-container {
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            min-height: 40px;
+            justify-content: center;
+            transition: all var(--transition-base);
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            transform: scale(1.05);
+        }
+
+        .controls-section {
+            padding: 12px 24px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
         }
 
         .control-group {
             display: flex;
-            align-items: center;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
         }
 
         label {
-            font-size: 13px;
-            font-weight: 500;
-            color: #4a5568;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        select {
+        select, input {
             padding: 8px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
             font-size: 13px;
             font-weight: 500;
-            background: white;
-            color: #374151;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--transition-base);
             outline: none;
+            font-family: 'Inter', sans-serif;
         }
 
-        select:hover {
-            border-color: #9ca3af;
+        select:hover, input:hover {
+            border-color: var(--accent-primary);
         }
 
-        select:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        select:focus, input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
         }
 
         button {
             padding: 8px 16px;
-            background: #3b82f6;
+            background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: var(--radius-sm);
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all var(--transition-base);
+            font-family: 'Inter', sans-serif;
         }
 
         button:hover {
-            background: #2563eb;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         button:active {
-            background: #1d4ed8;
+            transform: translateY(0);
         }
 
-        #progressContainer {
-            flex: 1;
-            min-width: 280px;
-            padding: 6px 10px;
-            background: #f9fafb;
-            border-radius: 6px;
-            border: 1px solid #e5e7eb;
-            display: block;
+        .timeline-section {
+            padding: 8px 24px 12px;
+            background: var(--bg-secondary);
         }
 
-        .progress-wrapper {
+        .timeline-wrapper {
+            position: relative;
+        }
+
+        .timeline-info {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .timeline-year {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .timeline-count {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
         }
 
         .progress-bar-container {
-            flex: 1;
-            background: #e5e7eb;
-            height: 24px;
-            border-radius: 12px;
-            overflow: hidden;
             position: relative;
+            height: 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: visible;
             cursor: pointer;
+            border: 1px solid var(--border-primary);
         }
 
         .progress-bar-container:hover {
-            background: #d1d5db;
+            border-color: var(--accent-primary);
         }
 
         #progressBar {
-            width: 0%;
             height: 100%;
-            background: #60a5fa;
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, var(--accent-gradient-start), var(--accent-gradient-end));
+            transition: width var(--transition-slow);
+            position: relative;
+            border-radius: 4px;
         }
 
-        #progressYear {
+        #progressBar::after {
+            content: '';
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: 700;
-            font-size: 13px;
-            color: #1f2937;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
-        }
-
-        #progressText {
-            min-width: 80px;
-            text-align: right;
-            font-size: 11px;
-            font-weight: 600;
-            color: #6b7280;
-            white-space: nowrap;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 2px solid var(--accent-primary);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+            box-shadow: var(--shadow-sm);
         }
 
         #map1 {
+            flex: 1;
             position: relative;
-            width: 100%;
-            height: 700px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e5e7eb;
+            background: var(--bg-secondary);
         }
 
         svg {
             overflow: hidden;
         }
 
+        /* Right Panel - Sidebar */
+        .sidebar {
+            background: var(--bg-elevated);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .stats-section {
+            padding: 32px 24px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .stats-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-primary);
+            transition: all var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .countries-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .countries-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .search-box::placeholder {
+            color: var(--text-tertiary);
+        }
+
+        .countries-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 24px 24px;
+        }
+
+        .country-item {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-primary);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .country-item:hover {
+            background: var(--bg-secondary);
+            padding-left: 24px;
+        }
+
+        .country-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .country-years {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .country-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-right: 4px;
+        }
+
         .hoverinfo {
             position: absolute;
-            background: white;
-            border: 1px solid #e5e7eb;
-            padding: 10px 15px;
-            border-radius: 6px;
+            background: var(--bg-elevated) !important;
+            border: 1px solid var(--border-primary) !important;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
             pointer-events: none;
             font-size: 13px;
             font-weight: 500;
-            color: #374151;
+            color: var(--text-primary) !important;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Override Datamaps default tooltip styling */
+        .datamaps-hoverover {
+            background: var(--bg-elevated) !important;
+            border: 1px solid var(--border-primary) !important;
+            color: var(--text-primary) !important;
+            box-shadow: var(--shadow-xl) !important;
+        }
+
+        .datamaps-hoverover b,
+        .datamaps-hoverover strong {
+            color: var(--text-primary) !important;
+        }
+
+        /* Scrollbar styling */
+        .countries-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .countries-list::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .countries-list::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: 4px;
+        }
+
+        .countries-list::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
         }
 
         /* Mobile responsive styles */
-        @media (max-width: 768px) {
-            body {
-                padding: 10px;
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
             }
 
-            .container {
-                padding: 15px;
-                border-radius: 8px;
+            .sidebar {
+                border-top: 1px solid var(--border-primary);
+            }
+
+            .map-panel {
+                border-right: none;
+                min-height: 60vh;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 12px 16px;
             }
 
             h1 {
-                font-size: 18px;
-                margin-bottom: 12px;
+                font-size: 20px;
             }
 
-            .controls-container {
-                flex-direction: column;
-                align-items: stretch;
+            .controls-section {
+                padding: 10px 16px;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
                 gap: 10px;
-                margin-bottom: 12px;
-                min-height: auto;
             }
 
-            .control-group {
-                flex-direction: row;
-                align-items: center;
-                gap: 8px;
-                flex-wrap: wrap;
+            .timeline-section {
+                padding: 8px 16px 10px;
             }
 
-            label {
-                font-size: 13px;
-                flex-shrink: 0;
+            .stats-section {
+                padding: 20px 16px;
             }
 
-            select {
-                padding: 8px 10px;
-                font-size: 14px;
-                flex: 1;
-                min-width: 0;
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
             }
 
-            button {
-                padding: 8px 12px;
-                font-size: 14px;
-                flex: 1;
-                min-width: 0;
+            .stat-card {
+                padding: 16px;
             }
 
-            #progressContainer {
-                min-width: auto;
-                width: 100%;
-                padding: 10px 12px;
+            .stat-value {
+                font-size: 24px;
             }
 
-            .progress-bar-container {
-                height: 32px;
-            }
-
-            #progressYear {
-                font-size: 15px;
-            }
-
-            #progressText {
-                font-size: 13px;
-                min-width: auto;
-            }
-
-            #map1 {
-                height: 450px;
+            .countries-header, .countries-list {
+                padding-left: 16px;
+                padding-right: 16px;
             }
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 12px;
-            }
-
             h1 {
+                font-size: 18px;
+            }
+
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
                 font-size: 16px;
             }
 
-            label {
-                font-size: 12px;
+            .stats-grid {
+                gap: 8px;
             }
 
-            select, button {
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-
-            #progressContainer {
+            .stat-card {
                 padding: 12px;
             }
 
-            .progress-bar-container {
-                height: 36px;
+            .stat-value {
+                font-size: 20px;
             }
 
-            #progressYear {
-                font-size: 16px;
-            }
-
-            #progressText {
-                font-size: 14px;
-            }
-
-            #map1 {
-                height: 350px;
+            .stat-label {
+                font-size: 10px;
             }
         }
 
-        @media (max-width: 390px) {
-            #map1 {
-                height: 320px;
+        /* Loading animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .country-item {
+            animation: fadeIn var(--transition-base) ease-out;
+        }
+
+        /* Continent filter tabs */
+        .continent-filters {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .continent-tab {
+            padding: 8px 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .continent-tab:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .continent-tab.active {
+            background: linear-gradient(135deg, var(--accent-gradient-start), var(--accent-gradient-end));
+            color: white;
+            border-color: transparent;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Where I've Been</h1>
-        <div class="controls-container">
-            <div class="control-group">
-                <label for="yearFilter">Filter by year:</label>
-                <select id="yearFilter">
-                    <option value="all">All Years</option>
-                </select>
-                <button id="animateBtn">Animate by Visit Order</button>
+    <div class="app-container">
+        <!-- Left Panel: Map -->
+        <div class="map-panel">
+            <div class="header">
+                <div class="header-content">
+                    <h1>My Travel Map</h1>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+                </div>
             </div>
-            <div id="progressContainer">
-                <div class="progress-wrapper">
+
+            <div class="controls-section">
+                <div class="controls-grid">
+                    <div class="control-group">
+                        <label for="yearFilter">Year Filter</label>
+                        <select id="yearFilter">
+                            <option value="all">All Years</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="continentFilter">Continent</label>
+                        <select id="continentFilter">
+                            <option value="all">All Continents</option>
+                            <option value="Africa">Africa</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="North America">North America</option>
+                            <option value="Oceania">Oceania</option>
+                            <option value="South America">South America</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="dateRangeStart">From Year</label>
+                        <input type="number" id="dateRangeStart" placeholder="Start year">
+                    </div>
+                    <div class="control-group">
+                        <label for="dateRangeEnd">To Year</label>
+                        <input type="number" id="dateRangeEnd" placeholder="End year">
+                    </div>
+                </div>
+                <div style="margin-top: 12px;">
+                    <button id="animateBtn" style="width: 100%;">▶ Animate Journey</button>
+                </div>
+            </div>
+
+            <div class="timeline-section">
+                <div class="timeline-wrapper">
+                    <div class="timeline-info">
+                        <div class="timeline-year" id="timelineYear">2024</div>
+                        <div class="timeline-count" id="timelineCount">0 countries</div>
+                    </div>
                     <div class="progress-bar-container" id="progressBarContainer">
                         <div id="progressBar"></div>
-                        <div id="progressYear"></div>
                     </div>
-                    <div id="progressText"></div>
+                </div>
+            </div>
+
+            <div id="map1"></div>
+        </div>
+
+        <!-- Right Panel: Sidebar -->
+        <div class="sidebar">
+            <div class="stats-section">
+                <div class="stats-title">Statistics</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="statCountries">0</div>
+                        <div class="stat-label">Countries</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statContinents">0</div>
+                        <div class="stat-label">Continents</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statYears">0</div>
+                        <div class="stat-label">Years</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="statPercent">0%</div>
+                        <div class="stat-label">World</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="countries-section">
+                <div class="countries-header">
+                    <input type="text" class="search-box" id="countrySearch" placeholder="🔍 Search countries...">
+                    <div class="continent-filters" id="continentTabs" style="margin-top: 16px;">
+                        <div class="continent-tab active" data-continent="all">All</div>
+                        <div class="continent-tab" data-continent="Europe">Europe</div>
+                        <div class="continent-tab" data-continent="Asia">Asia</div>
+                        <div class="continent-tab" data-continent="Africa">Africa</div>
+                        <div class="continent-tab" data-continent="Americas">Americas</div>
+                        <div class="continent-tab" data-continent="Oceania">Oceania</div>
+                    </div>
+                </div>
+                <div class="countries-list" id="countriesList">
+                    <!-- Countries will be populated here -->
                 </div>
             </div>
         </div>
-        <div id="map1"></div>
     </div>
 
     <script src="countries.js"></script>
     <script src="cities.js"></script>
 
     <script>
-    // Extract all unique years from all visits and sort them
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    // Load saved theme or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    // Country to continent mapping (simplified)
+    const countryToContinentMap = {
+        // Europe
+        'DEU': 'Europe', 'FRA': 'Europe', 'ITA': 'Europe', 'ESP': 'Europe', 'GBR': 'Europe',
+        'NLD': 'Europe', 'BEL': 'Europe', 'CHE': 'Europe', 'AUT': 'Europe', 'POL': 'Europe',
+        'CZE': 'Europe', 'HUN': 'Europe', 'ROU': 'Europe', 'BGR': 'Europe', 'GRC': 'Europe',
+        'PRT': 'Europe', 'SWE': 'Europe', 'NOR': 'Europe', 'DNK': 'Europe', 'FIN': 'Europe',
+        'IRL': 'Europe', 'ISL': 'Europe', 'EST': 'Europe', 'LVA': 'Europe', 'LTU': 'Europe',
+        'SVK': 'Europe', 'SVN': 'Europe', 'HRV': 'Europe', 'SRB': 'Europe', 'BIH': 'Europe',
+        'MKD': 'Europe', 'ALB': 'Europe', 'MNE': 'Europe', 'UKR': 'Europe', 'BLR': 'Europe',
+        'MDA': 'Europe', 'RUS': 'Europe',
+        // Asia
+        'CHN': 'Asia', 'JPN': 'Asia', 'KOR': 'Asia', 'IND': 'Asia', 'THA': 'Asia',
+        'VNM': 'Asia', 'IDN': 'Asia', 'MYS': 'Asia', 'SGP': 'Asia', 'PHL': 'Asia',
+        'PAK': 'Asia', 'BGD': 'Asia', 'IRN': 'Asia', 'IRQ': 'Asia', 'SAU': 'Asia',
+        'ARE': 'Asia', 'ISR': 'Asia', 'JOR': 'Asia', 'LBN': 'Asia', 'SYR': 'Asia',
+        'TUR': 'Asia', 'KAZ': 'Asia', 'UZB': 'Asia', 'TKM': 'Asia', 'KGZ': 'Asia',
+        'TJK': 'Asia', 'AFG': 'Asia', 'NPL': 'Asia', 'LKA': 'Asia', 'MMR': 'Asia',
+        'KHM': 'Asia', 'LAO': 'Asia', 'MNG': 'Asia', 'PRK': 'Asia',
+        // Africa
+        'ZAF': 'Africa', 'EGY': 'Africa', 'MAR': 'Africa', 'TUN': 'Africa', 'DZA': 'Africa',
+        'LBY': 'Africa', 'ETH': 'Africa', 'KEN': 'Africa', 'TZA': 'Africa', 'UGA': 'Africa',
+        'NGA': 'Africa', 'GHA': 'Africa', 'SEN': 'Africa', 'CIV': 'Africa', 'CMR': 'Africa',
+        'ZWE': 'Africa', 'MOZ': 'Africa', 'MDG': 'Africa', 'AGO': 'Africa', 'SDN': 'Africa',
+        // North America
+        'USA': 'North America', 'CAN': 'North America', 'MEX': 'North America',
+        'GTM': 'North America', 'CUB': 'North America', 'HTI': 'North America',
+        'DOM': 'North America', 'HND': 'North America', 'NIC': 'North America',
+        'CRI': 'North America', 'PAN': 'North America', 'SLV': 'North America',
+        'BLZ': 'North America', 'JAM': 'North America',
+        // South America
+        'BRA': 'South America', 'ARG': 'South America', 'CHL': 'South America',
+        'COL': 'South America', 'PER': 'South America', 'VEN': 'South America',
+        'ECU': 'South America', 'BOL': 'South America', 'PRY': 'South America',
+        'URY': 'South America', 'GUY': 'South America', 'SUR': 'South America',
+        // Oceania
+        'AUS': 'Oceania', 'NZL': 'Oceania', 'PNG': 'Oceania', 'FJI': 'Oceania',
+    };
+
+    // Extract all unique years and sort
     function getAllYears() {
         const years = new Set();
         Object.values(COUNTRIES).forEach(country => {
@@ -344,7 +790,7 @@
         return Array.from(years).sort((a, b) => a - b);
     }
 
-    // Populate year filter dropdown
+    // Populate year filter
     const yearFilter = document.getElementById('yearFilter');
     const allYears = getAllYears();
     allYears.forEach(year => {
@@ -354,6 +800,12 @@
         yearFilter.appendChild(option);
     });
 
+    // Set date range inputs
+    if (allYears.length > 0) {
+        document.getElementById('dateRangeStart').value = allYears[0];
+        document.getElementById('dateRangeEnd').value = allYears[allYears.length - 1];
+    }
+
     // Store original data
     const ORIGINAL_COUNTRIES = JSON.parse(JSON.stringify(COUNTRIES));
 
@@ -362,41 +814,60 @@
     let maxYear = allYears.length > 0 ? allYears[allYears.length - 1] : new Date().getFullYear();
     let currentYear = maxYear;
     let isAnimating = false;
+    let currentFilters = {
+        year: 'all',
+        continent: 'all',
+        dateStart: minYear,
+        dateEnd: maxYear,
+        search: ''
+    };
 
-    // Create the map
+    // Get theme-aware colors
+    function getThemeColors() {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        return {
+            visited: isDark ? '#22D3EE' : '#06B6D4',
+            visitedDark: isDark ? '#0EA5E9' : '#0891B2',
+            home: isDark ? '#34D399' : '#10B981',
+            unvisited: isDark ? '#334155' : '#E5E7EB',
+            highlight: isDark ? '#818CF8' : '#6366F1',
+        };
+    }
+
+    // Create the map with gradient fills
     var map = new Datamap({
         scope: 'world',
         element: document.getElementById('map1'),
         projection: 'mercator',
         responsive: true,
-        height: 700,
         setProjection: function(element) {
-            // Adjust scale based on screen width for better mobile experience
             var scale = 150;
             if (window.innerWidth <= 480) {
-                scale = 80; // Smaller scale for small phones
+                scale = 80;
             } else if (window.innerWidth <= 768) {
-                scale = 100; // Medium scale for tablets
+                scale = 100;
+            } else if (window.innerWidth <= 1024) {
+                scale = 120;
             }
 
             var projection = d3.geo.mercator()
-                .center([20, 50]) // Center on Europe (longitude, latitude)
+                .center([20, 50])
                 .scale(scale)
                 .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
             var path = d3.geo.path().projection(projection);
             return {path: path, projection: projection};
         },
         fills: {
-            defaultFill: '#B0B0B0',
-            visited: '#F5D02A',
-            visitedDark: '#C4A922',
-            home: '#199800',
-            city: '#B5F52A'
+            defaultFill: getThemeColors().unvisited,
+            visited: getThemeColors().visited,
+            visitedDark: getThemeColors().visitedDark,
+            home: getThemeColors().home,
         },
         geographyConfig: {
             highlightOnHover: true,
-            highlightFillColor: '#A0C0A0',
-            highlightBorderColor: '#F0F0F0',
+            highlightFillColor: getThemeColors().highlight,
+            highlightBorderColor: '#FFFFFF',
+            highlightBorderWidth: 2,
             popupOnHover: true,
             popupTemplate: function(geography, data) {
                 let html = '<div class="hoverinfo"><b>' + geography.properties.name + '</b>';
@@ -410,39 +881,218 @@
         data: COUNTRIES
     });
 
-    // Filter countries by year (checks if year exists in any visit)
-    function filterByYear(year) {
+    // Update theme colors when theme changes
+    themeToggle.addEventListener('click', () => {
+        setTimeout(() => {
+            const colors = getThemeColors();
+            map.options.fills.defaultFill = colors.unvisited;
+            map.options.fills.visited = colors.visited;
+            map.options.fills.visitedDark = colors.visitedDark;
+            map.options.fills.home = colors.home;
+            map.options.geographyConfig.highlightFillColor = colors.highlight;
+            map.updateChoropleth(COUNTRIES);
+        }, 100);
+    });
+
+    // Filter and update map
+    function applyFilters() {
         Object.keys(COUNTRIES).forEach(code => {
             const country = ORIGINAL_COUNTRIES[code];
 
-            // Always keep home countries visible
+            // Always show home countries
             if (country.fillKey === 'home') {
                 COUNTRIES[code] = country;
-            } else if (year === 'all') {
-                COUNTRIES[code] = country;
-            } else {
-                // Check if the selected year exists anywhere in the years array
-                if (country.years && country.years.some(y => y.toString() === year)) {
-                    COUNTRIES[code] = country;
-                } else {
-                    COUNTRIES[code] = {fillKey: 'defaultFill'};
-                }
+                return;
             }
+
+            // Check all filters
+            let show = true;
+
+            // Year filter
+            if (currentFilters.year !== 'all') {
+                show = show && country.years && country.years.includes(parseInt(currentFilters.year));
+            }
+
+            // Continent filter
+            if (currentFilters.continent !== 'all') {
+                const continent = countryToContinentMap[code];
+                show = show && continent === currentFilters.continent;
+            }
+
+            // Date range filter
+            if (country.years && country.years.length > 0) {
+                const hasYearInRange = country.years.some(y =>
+                    y >= currentFilters.dateStart && y <= currentFilters.dateEnd
+                );
+                show = show && hasYearInRange;
+            }
+
+            COUNTRIES[code] = show ? country : {fillKey: 'defaultFill'};
         });
+
         map.updateChoropleth(COUNTRIES);
+        updateStatistics();
+        updateCountriesList();
     }
 
-    // Update map to show countries up to a specific year
+    // Update statistics with animations
+    function updateStatistics() {
+        // Get currently visible countries (based on filters)
+        // Include 'visitedDark' to handle countries during pop animation
+        const visited = Object.entries(COUNTRIES).filter(([code, c]) =>
+            c.fillKey === 'visited' || c.fillKey === 'visitedDark' || c.fillKey === 'home'
+        );
+
+        // Calculate continents from visible countries
+        const continents = new Set(visited.map(([code]) => countryToContinentMap[code]).filter(Boolean));
+
+        // Calculate unique years from visible countries
+        const visibleYears = new Set();
+        visited.forEach(([code, c]) => {
+            if (c.years && c.years.length > 0) {
+                c.years.forEach(year => visibleYears.add(year));
+            }
+        });
+        const yearsSpan = visibleYears.size;
+
+        const totalCountries = 195; // Approximate
+        const percentage = Math.round((visited.length / totalCountries) * 100);
+
+        animateValue('statCountries', visited.length, 300);
+        animateValue('statContinents', continents.size, 300);
+        animateValue('statYears', yearsSpan, 300);
+        animateValue('statPercent', percentage, 300, '%');
+    }
+
+    // Store active animation timers to prevent overlapping animations
+    const activeAnimations = {};
+
+    function animateValue(id, targetValue, duration, suffix = '') {
+        const element = document.getElementById(id);
+
+        // Cancel any existing animation for this element
+        if (activeAnimations[id]) {
+            clearInterval(activeAnimations[id]);
+            delete activeAnimations[id];
+        }
+
+        // Get current value from element, removing any suffix
+        const currentText = element.textContent.replace(suffix, '').trim();
+        const currentValue = parseInt(currentText) || 0;
+
+        // If no change needed, just update and return
+        if (currentValue === targetValue) {
+            element.textContent = targetValue + suffix;
+            return;
+        }
+
+        const range = targetValue - currentValue;
+        const increment = range / (duration / 16);
+        let current = currentValue;
+
+        activeAnimations[id] = setInterval(() => {
+            current += increment;
+            if ((increment > 0 && current >= targetValue) || (increment < 0 && current <= targetValue)) {
+                current = targetValue;
+                clearInterval(activeAnimations[id]);
+                delete activeAnimations[id];
+            }
+            element.textContent = Math.floor(current) + suffix;
+        }, 16);
+    }
+
+    // Update countries list
+    function updateCountriesList() {
+        const countriesList = document.getElementById('countriesList');
+        const searchTerm = currentFilters.search.toLowerCase();
+
+        // Show currently visible countries (based on all active filters and timeline)
+        // Include 'visitedDark' to handle countries during pop animation
+        const visited = Object.entries(COUNTRIES)
+            .filter(([code, c]) => c.fillKey === 'visited' || c.fillKey === 'visitedDark' || c.fillKey === 'home')
+            .map(([code, c]) => ({
+                code,
+                name: getCountryName(code),
+                years: c.years || [],
+                continent: countryToContinentMap[code] || 'Unknown'
+            }))
+            .filter(c => c.name.toLowerCase().includes(searchTerm))
+            .filter(c => currentFilters.continent === 'all' || c.continent === currentFilters.continent)
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        countriesList.innerHTML = visited.map(country => `
+            <div class="country-item" data-code="${country.code}">
+                <div class="country-name">${country.name}</div>
+                <div class="country-years">
+                    ${country.years.map(year => `<span class="country-badge">${year}</span>`).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function getCountryName(code) {
+        // Try to get name from map data
+        const svg = d3.select('#map1').select('svg');
+        const geography = svg.select('.' + code);
+        if (geography && geography.datum && geography.datum()) {
+            return geography.datum().properties.name;
+        }
+        return code;
+    }
+
+    // Search functionality
+    document.getElementById('countrySearch').addEventListener('input', (e) => {
+        currentFilters.search = e.target.value;
+        updateCountriesList();
+    });
+
+    // Continent tabs
+    document.querySelectorAll('.continent-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.continent-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentFilters.continent = tab.dataset.continent;
+            updateCountriesList();
+        });
+    });
+
+    // Year filter
+    yearFilter.addEventListener('change', function() {
+        currentFilters.year = this.value;
+        if (this.value === 'all') {
+            currentYear = maxYear;
+            updateMapToYear(maxYear);
+        } else {
+            applyFilters();
+        }
+    });
+
+    // Continent filter
+    document.getElementById('continentFilter').addEventListener('change', function() {
+        currentFilters.continent = this.value;
+        applyFilters();
+    });
+
+    // Date range filters
+    document.getElementById('dateRangeStart').addEventListener('change', function() {
+        currentFilters.dateStart = parseInt(this.value) || minYear;
+        applyFilters();
+    });
+
+    document.getElementById('dateRangeEnd').addEventListener('change', function() {
+        currentFilters.dateEnd = parseInt(this.value) || maxYear;
+        applyFilters();
+    });
+
+    // Timeline progress bar
     function updateMapToYear(year) {
         currentYear = year;
         Object.keys(COUNTRIES).forEach(code => {
             const country = ORIGINAL_COUNTRIES[code];
 
-            // Always keep home countries visible
             if (country.fillKey === 'home') {
                 COUNTRIES[code] = country;
             } else if (country.years && country.years.length > 0) {
-                // Show if first visit year is <= current year
                 if (country.years[0] <= year) {
                     COUNTRIES[code] = country;
                 } else {
@@ -456,37 +1106,30 @@
         updateProgressBar();
     }
 
-    // Update progress bar display
     function updateProgressBar() {
         const progressBar = document.getElementById('progressBar');
-        const progressYear = document.getElementById('progressYear');
-        const progressText = document.getElementById('progressText');
+        const timelineYear = document.getElementById('timelineYear');
+        const timelineCount = document.getElementById('timelineCount');
 
         const yearRange = maxYear - minYear;
         const progress = yearRange > 0 ? ((currentYear - minYear) / yearRange) * 100 : 100;
 
         progressBar.style.width = progress + '%';
-        progressYear.textContent = currentYear;
+        timelineYear.textContent = currentYear;
 
-        // Count unique countries visited by their first visit year (including home)
-        const visibleCount = Object.entries(ORIGINAL_COUNTRIES).filter(([code, country]) =>
-            (country.fillKey === 'visited' && country.years && country.years.length > 0 && country.years[0] <= currentYear) ||
-            country.fillKey === 'home'
+        // Count currently visible countries
+        // Include 'visitedDark' to handle countries during pop animation
+        const visibleCount = Object.entries(COUNTRIES).filter(([code, country]) =>
+            country.fillKey === 'visited' || country.fillKey === 'visitedDark' || country.fillKey === 'home'
         ).length;
-        progressText.textContent = visibleCount + ' unique countries';
+        timelineCount.textContent = visibleCount + ' countries';
+
+        // Update statistics and countries list to reflect current state
+        updateStatistics();
+        updateCountriesList();
     }
 
-    // Year filter event listener
-    yearFilter.addEventListener('change', function() {
-        if (this.value === 'all') {
-            currentYear = maxYear;
-            updateMapToYear(maxYear);
-        } else {
-            filterByYear(this.value);
-        }
-    });
-
-    // Mouse interaction for progress bar
+    // Progress bar interaction
     const progressBarContainer = document.getElementById('progressBarContainer');
     let isDragging = false;
 
@@ -518,26 +1161,25 @@
 
     progressBarContainer.addEventListener('click', handleProgressBarClick);
 
-    // Pop animation function for re-visited countries
+    // Pop animation
     function popCountry(code, originalData) {
-        // Flash to darker color
         COUNTRIES[code] = {...originalData, fillKey: 'visitedDark'};
         map.updateChoropleth(COUNTRIES);
 
-        // Return to original color after 300ms
         setTimeout(() => {
             COUNTRIES[code] = originalData;
             map.updateChoropleth(COUNTRIES);
         }, 300);
     }
 
-    // Animate countries in visit order
+    // Animate journey
     document.getElementById('animateBtn').addEventListener('click', function() {
         if (isAnimating) return;
 
         isAnimating = true;
+        this.textContent = '⏸ Pause';
 
-        // Reset map to show only home country
+        // Reset
         Object.keys(COUNTRIES).forEach(code => {
             const country = ORIGINAL_COUNTRIES[code];
             if (country.fillKey === 'home') {
@@ -548,11 +1190,10 @@
         });
         map.updateChoropleth(COUNTRIES);
 
-        // Set progress bar to start
-        currentYear = minYear - 1; // Before first visit
+        currentYear = minYear - 1;
         updateProgressBar();
 
-        // Create a flat list of all visits (country, year) pairs
+        // Create visit timeline
         const allVisits = [];
         Object.entries(ORIGINAL_COUNTRIES).forEach(([code, data]) => {
             if (data.years && data.years.length > 0 && data.fillKey !== 'home') {
@@ -562,48 +1203,41 @@
             }
         });
 
-        // Sort all visits chronologically
         allVisits.sort((a, b) => a.year - b.year);
 
-        // Track which countries have already been visited
         const visitedCountries = new Set();
 
-        // Animate each visit
         allVisits.forEach((visit, index) => {
             setTimeout(() => {
                 currentYear = visit.year;
 
                 if (visitedCountries.has(visit.code)) {
-                    // Country already visited - trigger pop animation
                     popCountry(visit.code, visit.data);
                     updateProgressBar();
                 } else {
-                    // First visit - show country normally
                     COUNTRIES[visit.code] = visit.data;
                     map.updateChoropleth(COUNTRIES);
                     visitedCountries.add(visit.code);
                     updateProgressBar();
                 }
 
-                // End animation
                 if (index === allVisits.length - 1) {
                     isAnimating = false;
+                    document.getElementById('animateBtn').textContent = '▶ Animate Journey';
                 }
-            }, index * 500); // 500ms delay between each visit
+            }, index * 500);
         });
     });
 
-    // Append the cities and the map to separate groups for zooming
+    // Cities
     var svg = d3.select('#map1').select('svg');
-    var gMap = svg.append('g'); // Group for world map
-    var gCities = svg.append('g'); // Separate group for cities (above the map)
+    var gMap = svg.append('g');
+    var gCities = svg.append('g');
 
-    // Move all map paths into the map group
     svg.selectAll('.datamaps-subunit').each(function() {
         gMap.node().appendChild(this);
     });
 
-    // Add cities to their separate group
     function drawCities() {
         return gCities.selectAll('.city')
             .data(CITIES)
@@ -615,7 +1249,6 @@
             .attr('cx', d => map.latLngToXY(d.latitude, d.longitude)[0])
             .attr('cy', d => map.latLngToXY(d.latitude, d.longitude)[1])
             .on('mouseover', function(d) {
-                // Add hover functionality
                 d3.select(this).attr('stroke', 'black').attr('stroke-width', 2);
                 var tooltip = d3.select('body').append('div')
                     .attr('class', 'hoverinfo')
@@ -638,24 +1271,26 @@
 
     var cities = drawCities();
 
-    // Enable zooming and panning
+    // Zoom
     var zoom = d3.behavior.zoom()
-        .scaleExtent([1, 10]) // Zoom levels
+        .scaleExtent([1, 10])
         .on('zoom', function() {
             gMap.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
             gCities.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
         });
 
-    // Apply zoom behavior to the SVG
     svg.call(zoom);
 
-    // Resize listener for responsiveness
+    // Resize
     window.addEventListener('resize', function() {
         map.resize();
     });
 
-    // Initialize progress bar to show all countries
+    // Initialize
     updateMapToYear(maxYear);
+    updateStatistics();
+    updateCountriesList();
 
     </script>
 </body>
+</html>
