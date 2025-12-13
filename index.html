@@ -295,6 +295,7 @@
             flex: 1;
             position: relative;
             background: var(--bg-secondary);
+            min-height: 400px;
         }
 
         svg {
@@ -1365,14 +1366,14 @@
             .enter()
             .append('circle')
             .attr('class', 'small-country-marker')
-            .attr('r', 4)
+            .attr('r', 3)
             .attr('fill', d => getSmallCountryFill(d.code))
             .attr('stroke', '#fff')
-            .attr('stroke-width', 1)
+            .attr('stroke-width', 0.5)
             .attr('cx', d => map.latLngToXY(d.latitude, d.longitude)[0])
             .attr('cy', d => map.latLngToXY(d.latitude, d.longitude)[1])
             .on('mouseover', function(d) {
-                d3.select(this).attr('r', 6).attr('stroke-width', 1.5);
+                d3.select(this).attr('r', 5).attr('stroke-width', 1);
                 const countryData = COUNTRIES[d.code];
                 let tooltipHtml = '<b>' + d.name + '</b>';
                 if (countryData && countryData.years && countryData.years.length > 0) {
@@ -1392,7 +1393,7 @@
 
                 d3.select(this).on('mouseout', function() {
                     tooltip.remove();
-                    d3.select(this).attr('r', 4).attr('stroke-width', 1);
+                    d3.select(this).attr('r', 3).attr('stroke-width', 0.5);
                 });
             });
     }
@@ -1425,6 +1426,11 @@
     updateStatistics();
     updateCountriesList();
     updateSmallCountryMarkers();
+
+    // Ensure map fills available space on load
+    setTimeout(function() {
+        map.resize();
+    }, 100);
 
     </script>
 </body>
