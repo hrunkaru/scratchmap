@@ -1030,7 +1030,29 @@
         `).join('');
     }
 
+    // Fallback country names for small countries that may not have SVG elements
+    const COUNTRY_NAME_FALLBACKS = {
+        'SGP': 'Singapore',
+        'MCO': 'Monaco',
+        'VAT': 'Vatican City',
+        'SMR': 'San Marino',
+        'LIE': 'Liechtenstein',
+        'MLT': 'Malta',
+        'AND': 'Andorra',
+        'LUX': 'Luxembourg',
+        'BHR': 'Bahrain',
+        'MUS': 'Mauritius',
+        'MDV': 'Maldives',
+        'BRN': 'Brunei',
+        'HKG': 'Hong Kong',
+        'MAC': 'Macao'
+    };
+
     function getCountryName(code) {
+        // First check fallback names for small countries
+        if (COUNTRY_NAME_FALLBACKS[code]) {
+            return COUNTRY_NAME_FALLBACKS[code];
+        }
         // Try to get name from map data
         const svg = d3.select('#map1').select('svg');
         const geography = svg.select('.' + code);
