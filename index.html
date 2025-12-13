@@ -296,6 +296,13 @@
             position: relative;
             background: var(--bg-secondary);
             min-height: 400px;
+            width: 100%;
+        }
+
+        #map1 svg {
+            width: 100%;
+            height: 100%;
+            display: block;
         }
 
         svg {
@@ -852,17 +859,13 @@
         projection: 'mercator',
         responsive: true,
         setProjection: function(element) {
-            var scale = 150;
-            if (window.innerWidth <= 480) {
-                scale = 80;
-            } else if (window.innerWidth <= 768) {
-                scale = 100;
-            } else if (window.innerWidth <= 1024) {
-                scale = 120;
-            }
+            // Calculate scale based on container width to fill the available space
+            // Using width/5.5 provides good coverage while keeping margins reasonable
+            var scale = Math.max(element.offsetWidth / 5.5, 80);
 
+            // Center the map more towards the middle of the container
             var projection = d3.geo.mercator()
-                .center([20, 50])
+                .center([10, 30])
                 .scale(scale)
                 .translate([element.offsetWidth / 2, element.offsetHeight / 2]);
             var path = d3.geo.path().projection(projection);
@@ -1419,6 +1422,8 @@
     // Resize
     window.addEventListener('resize', function() {
         map.resize();
+        // Redraw small country markers with new projection
+        smallCountryMarkers = drawSmallCountries();
     });
 
     // Initialize
@@ -1430,6 +1435,8 @@
     // Ensure map fills available space on load
     setTimeout(function() {
         map.resize();
+        // Redraw small country markers with updated projection
+        smallCountryMarkers = drawSmallCountries();
     }, 100);
 
     </script>
