@@ -97,7 +97,7 @@ COUNTRIES = {
     GUY: {fillKey: 'defaultFill'}, // Guyana
     HTI: {fillKey: 'defaultFill'}, // Haiti
     HMD: {fillKey: 'defaultFill'}, // Heard Island and McDonald Islands
-    VAT: {fillKey: 'defaultFill'}, // Holy See
+    VAT: {fillKey: 'visited', years: [2023]}, // Vatican City
     HND: {fillKey: 'defaultFill'}, // Honduras
     HKG: {fillKey: 'defaultFill'}, // Hong Kong
     HUN: {fillKey: 'visited', years: [2024]}, // Hungary
