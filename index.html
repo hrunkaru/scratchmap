@@ -100,8 +100,9 @@
         .app-container {
             display: grid;
             grid-template-columns: 1fr 400px;
-            min-height: 100vh;
+            height: 100vh;
             gap: 0;
+            overflow: hidden;
         }
 
         /* Left Panel - Map */
@@ -487,6 +488,8 @@
         @media (max-width: 1024px) {
             .app-container {
                 grid-template-columns: 1fr;
+                height: auto;
+                overflow: visible;
             }
 
             .sidebar {
@@ -496,6 +499,10 @@
             .map-panel {
                 border-right: none;
                 min-height: 60vh;
+            }
+
+            .countries-section {
+                max-height: 50vh;
             }
 
             .stats-grid {
