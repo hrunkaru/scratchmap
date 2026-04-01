@@ -174,7 +174,7 @@ COUNTRIES = {
     PNG: {fillKey: 'defaultFill'}, // Papua New Guinea
     PRY: {fillKey: 'defaultFill'}, // Paraguay
     PER: {fillKey: 'defaultFill'}, // Peru
-    PHL: {fillKey: 'defaultFill'}, // Philippines
+    PHL: {fillKey: 'visited', years: [2026]}, // Philippines
     PCN: {fillKey: 'defaultFill'}, // Pitcairn
     POL: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Poland
     PRT: {fillKey: 'visited', years: [2025]}, // Portugal
