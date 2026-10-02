@@ -75,7 +75,7 @@ COUNTRIES = {
     FRO: {fillKey: 'defaultFill'}, // Faroe Islands
     FJI: {fillKey: 'defaultFill'}, // Fiji
     FIN: {fillKey: 'visited', years: [2014, 2019, 2020, 2022, 2023, 2024, 2025]}, // Finland
-    FRA: {fillKey: 'visited', years: [2025]}, // France
+    FRA: {fillKey: 'visited', years: [2025, 2026]}, // France
     GUF: {fillKey: 'defaultFill'}, // French Guiana
     PYF: {fillKey: 'defaultFill'}, // French Polynesia
     ATF: {fillKey: 'defaultFill'}, // French Southern Territories
@@ -145,7 +145,7 @@ COUNTRIES = {
     MEX: {fillKey: 'defaultFill'}, // Mexico
     FSM: {fillKey: 'defaultFill'}, // Micronesia (Federated States of)
     MDA: {fillKey: 'defaultFill'}, // Moldova (Republic of)
-    MCO: {fillKey: 'defaultFill'}, // Monaco
+    MCO: {fillKey: 'visited', years: [2026]}, // Monaco
     MNG: {fillKey: 'defaultFill'}, // Mongolia
     MNE: {fillKey: 'visited', years: [2023]}, // Montenegro
     MSR: {fillKey: 'defaultFill'}, // Montserrat
@@ -233,7 +233,7 @@ COUNTRIES = {
     UGA: {fillKey: 'defaultFill'}, // Uganda
     UKR: {fillKey: 'defaultFill'}, // Ukraine
     ARE: {fillKey: 'defaultFill'}, // United Arab Emirates
-    GBR: {fillKey: 'defaultFill'}, // United Kingdom of Great Britain and Northern Ireland
+    GBR: {fillKey: 'visited', years: [2026]}, // United Kingdom of Great Britain and Northern Ireland
     USA: {fillKey: 'visited', years: [2017, 2025]}, // United States of America
     UMI: {fillKey: 'defaultFill'}, // United States Minor Outlying Islands
     URY: {fillKey: 'defaultFill'}, // Uruguay
