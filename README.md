@@ -34,8 +34,27 @@ FRA: {years: [2025, 2026]},          // France
 * The home country is marked with `home: true` and is always shown.
 * Mistakes such as unknown codes, duplicate years or non-numeric years are
   shown in a yellow box at the top of the sidebar (and in the browser console).
+* Country codes are ISO 3166-1 alpha-3; the comment at the end of each line
+  gives the name, so searching the file for the country name finds its line.
 
 Optional points of interest (cities, parks…) go in `cities.js`.
+
+### Checking your changes
+
+Every push to GitHub runs the **Check** workflow (`.github/workflows/check.yml`):
+it validates `countries.js`/`cities.js` and runs the tests. A red ✗ on the commit
+means something needs fixing — the log names the country and the problem.
+
+With [Node.js](https://nodejs.org/) 20+ installed you can run the same checks
+locally (nothing to install):
+
+```sh
+npm run check   # validate the data files, print a summary
+npm test        # data checks + tests for filters and statistics
+```
+
+Editing directly on github.com works too; the workflow result appears on the
+commit a minute later.
 
 ## Previewing locally
 
@@ -62,6 +81,13 @@ python3 -m http.server 8000
 | `js/layout.js` | Collapsible side panel (desktop) and bottom sheet (phone) |
 | `vendor/` | D3 v7, topojson-client, world-atlas 1:50m country shapes |
 | `tools/build-meta.mjs` | Regenerates `data/countries-meta.js` |
+| `tools/check-data.mjs`, `test/` | Data validation and tests (`npm run check`, `npm test`) |
+
+## Publishing
+
+The site is served by GitHub Pages straight from the repository (custom domain
+in `CNAME`; `.nojekyll` makes Pages serve the files as they are). There is no
+build step: merge to the published branch and the change is live.
 
 ## Credits
 

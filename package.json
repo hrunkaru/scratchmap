@@ -1,0 +1,13 @@
+{
+  "name": "scratchmap",
+  "private": true,
+  "description": "Personal travel map — static site, no build step. package.json only exists to run the checks.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "check": "node tools/check-data.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
