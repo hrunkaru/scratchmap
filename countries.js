@@ -1,249 +1,258 @@
-// Use ISO alpha-3 country codes, see e.g. https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
-COUNTRIES = {
-    AFG: {fillKey: 'defaultFill'}, // Afghanistan
-    ALA: {fillKey: 'defaultFill'}, // Åland Islands
-    ALB: {fillKey: 'defaultFill'}, // Albania
-    DZA: {fillKey: 'defaultFill'}, // Algeria
-    ASM: {fillKey: 'defaultFill'}, // American Samoa
-    AND: {fillKey: 'visited', years: [2025]}, // Andorra
-    AGO: {fillKey: 'defaultFill'}, // Angola
-    AIA: {fillKey: 'defaultFill'}, // Anguilla
-    ATA: {fillKey: 'defaultFill'}, // Antarctica
-    ATG: {fillKey: 'defaultFill'}, // Antigua and Barbuda
-    ARG: {fillKey: 'defaultFill'}, // Argentina
-    ARM: {fillKey: 'defaultFill'}, // Armenia
-    ABW: {fillKey: 'defaultFill'}, // Aruba
-    AUS: {fillKey: 'defaultFill'}, // Australia
-    AUT: {fillKey: 'visited', years: [2022, 2023, 2024]}, // Austria
-    AZE: {fillKey: 'defaultFill'}, // Azerbaijan
-    BHS: {fillKey: 'defaultFill'}, // Bahamas
-    BHR: {fillKey: 'defaultFill'}, // Bahrain
-    BGD: {fillKey: 'defaultFill'}, // Bangladesh
-    BRB: {fillKey: 'defaultFill'}, // Barbados
-    BLR: {fillKey: 'defaultFill'}, // Belarus
-    BEL: {fillKey: 'visited', years: [2025]}, // Belgium
-    BLZ: {fillKey: 'defaultFill'}, // Belize
-    BEN: {fillKey: 'defaultFill'}, // Benin
-    BMU: {fillKey: 'defaultFill'}, // Bermuda
-    BTN: {fillKey: 'defaultFill'}, // Bhutan
-    BOL: {fillKey: 'defaultFill'}, // Bolivia (Plurinational State of)
-    BES: {fillKey: 'defaultFill'}, // Bonaire, Sint Eustatius and Saba
-    BIH: {fillKey: 'visited', years: [2023]}, // Bosnia and Herzegovina
-    BWA: {fillKey: 'defaultFill'}, // Botswana
-    BVT: {fillKey: 'defaultFill'}, // Bouvet Island
-    BRA: {fillKey: 'defaultFill'}, // Brazil
-    IOT: {fillKey: 'defaultFill'}, // British Indian Ocean Territory
-    BRN: {fillKey: 'defaultFill'}, // Brunei Darussalam
-    BGR: {fillKey: 'visited', years: [2025]}, // Bulgaria
-    BFA: {fillKey: 'defaultFill'}, // Burkina Faso
-    BDI: {fillKey: 'defaultFill'}, // Burundi
-    CPV: {fillKey: 'defaultFill'}, // Cabo Verde
-    KHM: {fillKey: 'defaultFill'}, // Cambodia
-    CMR: {fillKey: 'defaultFill'}, // Cameroon
-    CAN: {fillKey: 'defaultFill'}, // Canada
-    CYM: {fillKey: 'defaultFill'}, // Cayman Islands
-    CAF: {fillKey: 'defaultFill'}, // Central African Republic
-    TCD: {fillKey: 'defaultFill'}, // Chad
-    CHL: {fillKey: 'defaultFill'}, // Chile
-    CHN: {fillKey: 'defaultFill'}, // China
-    CXR: {fillKey: 'defaultFill'}, // Christmas Island
-    CCK: {fillKey: 'defaultFill'}, // Cocos (Keeling) Islands
-    COL: {fillKey: 'defaultFill'}, // Colombia
-    COM: {fillKey: 'defaultFill'}, // Comoros
-    COG: {fillKey: 'defaultFill'}, // Congo
-    COD: {fillKey: 'defaultFill'}, // Congo (Democratic Republic of the)
-    COK: {fillKey: 'defaultFill'}, // Cook Islands
-    CRI: {fillKey: 'defaultFill'}, // Costa Rica
-    HRV: {fillKey: 'visited', years: [2018, 2023]}, // Croatia
-    CUB: {fillKey: 'defaultFill'}, // Cuba
-    CUW: {fillKey: 'defaultFill'}, // Curaçao
-    CYP: {fillKey: 'defaultFill'}, // Cyprus
-    CZE: {fillKey: 'visited', years: [2011, 2025]}, // Czechia
-    DNK: {fillKey: 'visited', years: [2025]}, // Denmark
-    DJI: {fillKey: 'defaultFill'}, // Djibouti
-    DMA: {fillKey: 'defaultFill'}, // Dominica
-    DOM: {fillKey: 'defaultFill'}, // Dominican Republic
-    ECU: {fillKey: 'defaultFill'}, // Ecuador
-    EGY: {fillKey: 'visited', years: [2024]}, // Egypt
-    SLV: {fillKey: 'defaultFill'}, // El Salvador
-    GNQ: {fillKey: 'defaultFill'}, // Equatorial Guinea
-    ERI: {fillKey: 'defaultFill'}, // Eritrea
-    EST: {fillKey: 'home'}, // Estonia
-    SWZ: {fillKey: 'defaultFill'}, // Eswatini
-    ETH: {fillKey: 'defaultFill'}, // Ethiopia
-    FLK: {fillKey: 'defaultFill'}, // Falkland Islands [Malvinas]
-    FRO: {fillKey: 'defaultFill'}, // Faroe Islands
-    FJI: {fillKey: 'defaultFill'}, // Fiji
-    FIN: {fillKey: 'visited', years: [2014, 2019, 2020, 2022, 2023, 2024, 2025]}, // Finland
-    FRA: {fillKey: 'visited', years: [2025, 2026]}, // France
-    GUF: {fillKey: 'defaultFill'}, // French Guiana
-    PYF: {fillKey: 'defaultFill'}, // French Polynesia
-    ATF: {fillKey: 'defaultFill'}, // French Southern Territories
-    GAB: {fillKey: 'defaultFill'}, // Gabon
-    GMB: {fillKey: 'defaultFill'}, // Gambia
-    GEO: {fillKey: 'defaultFill'}, // Georgia
-    DEU: {fillKey: 'visited', years: [2024, 2025]}, // Germany
-    GHA: {fillKey: 'defaultFill'}, // Ghana
-    GIB: {fillKey: 'defaultFill'}, // Gibraltar
-    GRC: {fillKey: 'visited', years: [2024]}, // Greece
-    GRL: {fillKey: 'defaultFill'}, // Greenland
-    GRD: {fillKey: 'defaultFill'}, // Grenada
-    GLP: {fillKey: 'defaultFill'}, // Guadeloupe
-    GUM: {fillKey: 'defaultFill'}, // Guam
-    GTM: {fillKey: 'defaultFill'}, // Guatemala
-    GGY: {fillKey: 'defaultFill'}, // Guernsey
-    GIN: {fillKey: 'defaultFill'}, // Guinea
-    GNB: {fillKey: 'defaultFill'}, // Guinea-Bissau
-    GUY: {fillKey: 'defaultFill'}, // Guyana
-    HTI: {fillKey: 'defaultFill'}, // Haiti
-    HMD: {fillKey: 'defaultFill'}, // Heard Island and McDonald Islands
-    VAT: {fillKey: 'visited', years: [2023]}, // Vatican City
-    HND: {fillKey: 'defaultFill'}, // Honduras
-    HKG: {fillKey: 'defaultFill'}, // Hong Kong
-    HUN: {fillKey: 'visited', years: [2024]}, // Hungary
-    ISL: {fillKey: 'defaultFill'}, // Iceland
-    IND: {fillKey: 'defaultFill'}, // India
-    IDN: {fillKey: 'defaultFill'}, // Indonesia
-    IRN: {fillKey: 'defaultFill'}, // Iran (Islamic Republic of)
-    IRQ: {fillKey: 'defaultFill'}, // Iraq
-    IRL: {fillKey: 'defaultFill'}, // Ireland
-    IMN: {fillKey: 'defaultFill'}, // Isle of Man
-    ISR: {fillKey: 'defaultFill'}, // Israel
-    ITA: {fillKey: 'visited', years: [2021, 2022, 2023, 2024]}, // Italy
-    JAM: {fillKey: 'defaultFill'}, // Jamaica
-    JPN: {fillKey: 'defaultFill'}, // Japan
-    JEY: {fillKey: 'defaultFill'}, // Jersey
-    JOR: {fillKey: 'defaultFill'}, // Jordan
-    KAZ: {fillKey: 'defaultFill'}, // Kazakhstan
-    KEN: {fillKey: 'defaultFill'}, // Kenya
-    KIR: {fillKey: 'defaultFill'}, // Kiribati
-    PRK: {fillKey: 'defaultFill'}, // Korea (Democratic People's Republic of)
-    KOR: {fillKey: 'defaultFill'}, // Korea (Republic of)
-    KWT: {fillKey: 'defaultFill'}, // Kuwait
-    KGZ: {fillKey: 'defaultFill'}, // Kyrgyzstan
-    LAO: {fillKey: 'defaultFill'}, // Lao People's Democratic Republic
-    LVA: {fillKey: 'visited', years: [2014, 2018, 2021, 2022, 2023, 2024, 2025]}, // Latvia
-    LBN: {fillKey: 'defaultFill'}, // Lebanon
-    LSO: {fillKey: 'defaultFill'}, // Lesotho
-    LBR: {fillKey: 'defaultFill'}, // Liberia
-    LBY: {fillKey: 'defaultFill'}, // Libya
-    LIE: {fillKey: 'defaultFill'}, // Liechtenstein
-    LTU: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Lithuania
-    LUX: {fillKey: 'visited', years: [2025]}, // Luxembourg
-    MAC: {fillKey: 'defaultFill'}, // Macao
-    MDG: {fillKey: 'defaultFill'}, // Madagascar
-    MWI: {fillKey: 'defaultFill'}, // Malawi
-    MYS: {fillKey: 'defaultFill'}, // Malaysia
-    MDV: {fillKey: 'defaultFill'}, // Maldives
-    MLI: {fillKey: 'defaultFill'}, // Mali
-    MLT: {fillKey: 'visited', years: [2024]}, // Malta
-    MHL: {fillKey: 'defaultFill'}, // Marshall Islands
-    MTQ: {fillKey: 'defaultFill'}, // Martinique
-    MRT: {fillKey: 'defaultFill'}, // Mauritania
-    MUS: {fillKey: 'defaultFill'}, // Mauritius
-    MYT: {fillKey: 'defaultFill'}, // Mayotte
-    MEX: {fillKey: 'defaultFill'}, // Mexico
-    FSM: {fillKey: 'defaultFill'}, // Micronesia (Federated States of)
-    MDA: {fillKey: 'defaultFill'}, // Moldova (Republic of)
-    MCO: {fillKey: 'visited', years: [2026]}, // Monaco
-    MNG: {fillKey: 'defaultFill'}, // Mongolia
-    MNE: {fillKey: 'visited', years: [2023]}, // Montenegro
-    MSR: {fillKey: 'defaultFill'}, // Montserrat
-    MAR: {fillKey: 'defaultFill'}, // Morocco
-    MOZ: {fillKey: 'defaultFill'}, // Mozambique
-    MMR: {fillKey: 'defaultFill'}, // Myanmar
-    NAM: {fillKey: 'defaultFill'}, // Namibia
-    NRU: {fillKey: 'defaultFill'}, // Nauru
-    NPL: {fillKey: 'defaultFill'}, // Nepal
-    NLD: {fillKey: 'visited', years: [2017]}, // Netherlands
-    NCL: {fillKey: 'defaultFill'}, // New Caledonia
-    NZL: {fillKey: 'defaultFill'}, // New Zealand
-    NIC: {fillKey: 'defaultFill'}, // Nicaragua
-    NER: {fillKey: 'defaultFill'}, // Niger
-    NGA: {fillKey: 'defaultFill'}, // Nigeria
-    NIU: {fillKey: 'defaultFill'}, // Niue
-    NFK: {fillKey: 'defaultFill'}, // Norfolk Island
-    MKD: {fillKey: 'defaultFill'}, // North Macedonia
-    MNP: {fillKey: 'defaultFill'}, // Northern Mariana Islands
-    NOR: {fillKey: 'visited', years: [2016]}, // Norway
-    OMN: {fillKey: 'defaultFill'}, // Oman
-    PAK: {fillKey: 'defaultFill'}, // Pakistan
-    PLW: {fillKey: 'defaultFill'}, // Palau
-    PSE: {fillKey: 'defaultFill'}, // Palestine, State of
-    PAN: {fillKey: 'defaultFill'}, // Panama
-    PNG: {fillKey: 'defaultFill'}, // Papua New Guinea
-    PRY: {fillKey: 'defaultFill'}, // Paraguay
-    PER: {fillKey: 'defaultFill'}, // Peru
-    PHL: {fillKey: 'visited', years: [2026]}, // Philippines
-    PCN: {fillKey: 'defaultFill'}, // Pitcairn
-    POL: {fillKey: 'visited', years: [2022, 2023, 2024, 2025]}, // Poland
-    PRT: {fillKey: 'visited', years: [2025]}, // Portugal
-    PRI: {fillKey: 'defaultFill'}, // Puerto Rico
-    QAT: {fillKey: 'defaultFill'}, // Qatar
-    REU: {fillKey: 'defaultFill'}, // Réunion
-    ROU: {fillKey: 'visited', years: [2025]}, // Romania
-    RUS: {fillKey: 'visited', years: [2003]}, // Russian Federation
-    RWA: {fillKey: 'defaultFill'}, // Rwanda
-    BLM: {fillKey: 'defaultFill'}, // Saint Barthélemy
-    SHN: {fillKey: 'defaultFill'}, // Saint Helena, Ascension and Tristan da Cunha
-    KNA: {fillKey: 'defaultFill'}, // Saint Kitts and Nevis
-    LCA: {fillKey: 'defaultFill'}, // Saint Lucia
-    MAF: {fillKey: 'defaultFill'}, // Saint Martin (French part)
-    SPM: {fillKey: 'defaultFill'}, // Saint Pierre and Miquelon
-    VCT: {fillKey: 'defaultFill'}, // Saint Vincent and the Grenadines
-    WSM: {fillKey: 'defaultFill'}, // Samoa
-    SMR: {fillKey: 'defaultFill'}, // San Marino
-    STP: {fillKey: 'defaultFill'}, // Sao Tome and Principe
-    SAU: {fillKey: 'defaultFill'}, // Saudi Arabia
-    SEN: {fillKey: 'defaultFill'}, // Senegal
-    SRB: {fillKey: 'visited', years: [2023]}, // Serbia
-    SYC: {fillKey: 'defaultFill'}, // Seychelles
-    SLE: {fillKey: 'defaultFill'}, // Sierra Leone
-    SGP: {fillKey: 'visited', years: [2023]}, // Singapore
-    SXM: {fillKey: 'defaultFill'}, // Sint Maarten (Dutch part)
-    SVK: {fillKey: 'visited', years: [2015, 2017]}, // Slovakia
-    SVN: {fillKey: 'visited', years: [2024]}, // Slovenia
-    SLB: {fillKey: 'defaultFill'}, // Solomon Islands
-    SOM: {fillKey: 'defaultFill'}, // Somalia
-    ZAF: {fillKey: 'defaultFill'}, // South Africa
-    SGS: {fillKey: 'defaultFill'}, // South Georgia and the South Sandwich Islands
-    SSD: {fillKey: 'defaultFill'}, // South Sudan
-    ESP: {fillKey: 'defaultFill'}, // Spain
-    LKA: {fillKey: 'defaultFill'}, // Sri Lanka
-    SDN: {fillKey: 'defaultFill'}, // Sudan
-    SUR: {fillKey: 'defaultFill'}, // Suriname
-    SJM: {fillKey: 'defaultFill'}, // Svalbard and Jan Mayen
-    SWE: {fillKey: 'visited', years: [2015, 2018, 2025]}, // Sweden
-    CHE: {fillKey: 'defaultFill'}, // Switzerland
-    SYR: {fillKey: 'defaultFill'}, // Syrian Arab Republic
-    TWN: {fillKey: 'defaultFill'}, // Taiwan, Province of China
-    TJK: {fillKey: 'defaultFill'}, // Tajikistan
-    TZA: {fillKey: 'defaultFill'}, // Tanzania, United Republic of
-    THA: {fillKey: 'visited', years: [2023]}, // Thailand
-    TLS: {fillKey: 'defaultFill'}, // Timor-Leste
-    TGO: {fillKey: 'defaultFill'}, // Togo
-    TKL: {fillKey: 'defaultFill'}, // Tokelau
-    TON: {fillKey: 'defaultFill'}, // Tonga
-    TTO: {fillKey: 'defaultFill'}, // Trinidad and Tobago
-    TUN: {fillKey: 'defaultFill'}, // Tunisia
-    TUR: {fillKey: 'defaultFill'}, // Türkiye
-    TKM: {fillKey: 'defaultFill'}, // Turkmenistan
-    TCA: {fillKey: 'defaultFill'}, // Turks and Caicos Islands
-    TUV: {fillKey: 'defaultFill'}, // Tuvalu
-    UGA: {fillKey: 'defaultFill'}, // Uganda
-    UKR: {fillKey: 'defaultFill'}, // Ukraine
-    ARE: {fillKey: 'defaultFill'}, // United Arab Emirates
-    GBR: {fillKey: 'visited', years: [2026]}, // United Kingdom of Great Britain and Northern Ireland
-    USA: {fillKey: 'visited', years: [2017, 2025]}, // United States of America
-    UMI: {fillKey: 'defaultFill'}, // United States Minor Outlying Islands
-    URY: {fillKey: 'defaultFill'}, // Uruguay
-    UZB: {fillKey: 'defaultFill'}, // Uzbekistan
-    VUT: {fillKey: 'defaultFill'}, // Vanuatu
-    VEN: {fillKey: 'defaultFill'}, // Venezuela (Bolivarian Republic of)
-    VNM: {fillKey: 'visited', years: [2023]}, // Viet Nam
-    WLF: {fillKey: 'defaultFill'}, // Wallis and Futuna
-    ESH: {fillKey: 'defaultFill'}, // Western Sahara
-    YEM: {fillKey: 'defaultFill'}, // Yemen
-    ZMB: {fillKey: 'defaultFill'}, // Zambia
-    ZWE: {fillKey: 'defaultFill'}, // Zimbabwe
-}
+// My travels — one line per country or territory (ISO 3166-1 alpha-3 code).
+//
+// Visited somewhere? Add the year to that country's list, e.g.
+//     FRA: {years: [2025, 2026]},
+// Put each year once, even if you went there several times that year.
+// Your home country is marked with `home: true` and is always shown.
+export default {
+    AFG: {years: []},                                       // Afghanistan
+    ALA: {years: []},                                       // Åland Islands
+    ALB: {years: []},                                       // Albania
+    DZA: {years: []},                                       // Algeria
+    ASM: {years: []},                                       // American Samoa
+    AND: {years: [2025]},                                   // Andorra
+    AGO: {years: []},                                       // Angola
+    AIA: {years: []},                                       // Anguilla
+    ATA: {years: []},                                       // Antarctica
+    ATG: {years: []},                                       // Antigua and Barbuda
+    ARG: {years: []},                                       // Argentina
+    ARM: {years: []},                                       // Armenia
+    ABW: {years: []},                                       // Aruba
+    AUS: {years: []},                                       // Australia
+    AUT: {years: [2022, 2023, 2024]},                       // Austria
+    AZE: {years: []},                                       // Azerbaijan
+    BHS: {years: []},                                       // Bahamas
+    BHR: {years: []},                                       // Bahrain
+    BGD: {years: []},                                       // Bangladesh
+    BRB: {years: []},                                       // Barbados
+    BLR: {years: []},                                       // Belarus
+    BEL: {years: [2025]},                                   // Belgium
+    BLZ: {years: []},                                       // Belize
+    BEN: {years: []},                                       // Benin
+    BMU: {years: []},                                       // Bermuda
+    BTN: {years: []},                                       // Bhutan
+    BOL: {years: []},                                       // Bolivia
+    BIH: {years: [2023]},                                   // Bosnia and Herzegovina
+    BWA: {years: []},                                       // Botswana
+    BVT: {years: []},                                       // Bouvet Island
+    BRA: {years: []},                                       // Brazil
+    IOT: {years: []},                                       // British Indian Ocean Territory
+    VGB: {years: []},                                       // British Virgin Islands
+    BRN: {years: []},                                       // Brunei
+    BGR: {years: [2025]},                                   // Bulgaria
+    BFA: {years: []},                                       // Burkina Faso
+    BDI: {years: []},                                       // Burundi
+    KHM: {years: []},                                       // Cambodia
+    CMR: {years: []},                                       // Cameroon
+    CAN: {years: []},                                       // Canada
+    CPV: {years: []},                                       // Cape Verde
+    BES: {years: []},                                       // Caribbean Netherlands
+    CYM: {years: []},                                       // Cayman Islands
+    CAF: {years: []},                                       // Central African Republic
+    TCD: {years: []},                                       // Chad
+    CHL: {years: []},                                       // Chile
+    CHN: {years: []},                                       // China
+    CXR: {years: []},                                       // Christmas Island
+    CCK: {years: []},                                       // Cocos (Keeling) Islands
+    COL: {years: []},                                       // Colombia
+    COM: {years: []},                                       // Comoros
+    COK: {years: []},                                       // Cook Islands
+    CRI: {years: []},                                       // Costa Rica
+    HRV: {years: [2018, 2023]},                             // Croatia
+    CUB: {years: []},                                       // Cuba
+    CUW: {years: []},                                       // Curaçao
+    CYP: {years: []},                                       // Cyprus
+    CZE: {years: [2011, 2025]},                             // Czechia
+    DNK: {years: [2025]},                                   // Denmark
+    DJI: {years: []},                                       // Djibouti
+    DMA: {years: []},                                       // Dominica
+    DOM: {years: []},                                       // Dominican Republic
+    COD: {years: []},                                       // DR Congo
+    ECU: {years: []},                                       // Ecuador
+    EGY: {years: [2024]},                                   // Egypt
+    SLV: {years: []},                                       // El Salvador
+    GNQ: {years: []},                                       // Equatorial Guinea
+    ERI: {years: []},                                       // Eritrea
+    EST: {home: true, years: []},                           // Estonia
+    SWZ: {years: []},                                       // Eswatini
+    ETH: {years: []},                                       // Ethiopia
+    FLK: {years: []},                                       // Falkland Islands
+    FRO: {years: []},                                       // Faroe Islands
+    FJI: {years: []},                                       // Fiji
+    FIN: {years: [2014, 2019, 2020, 2022, 2023, 2024, 2025]},// Finland
+    FRA: {years: [2025, 2026]},                             // France
+    GUF: {years: []},                                       // French Guiana
+    PYF: {years: []},                                       // French Polynesia
+    ATF: {years: []},                                       // French Southern and Antarctic Lands
+    GAB: {years: []},                                       // Gabon
+    GMB: {years: []},                                       // Gambia
+    GEO: {years: []},                                       // Georgia
+    DEU: {years: [2024, 2025]},                             // Germany
+    GHA: {years: []},                                       // Ghana
+    GIB: {years: []},                                       // Gibraltar
+    GRC: {years: [2024]},                                   // Greece
+    GRL: {years: []},                                       // Greenland
+    GRD: {years: []},                                       // Grenada
+    GLP: {years: []},                                       // Guadeloupe
+    GUM: {years: []},                                       // Guam
+    GTM: {years: []},                                       // Guatemala
+    GGY: {years: []},                                       // Guernsey
+    GIN: {years: []},                                       // Guinea
+    GNB: {years: []},                                       // Guinea-Bissau
+    GUY: {years: []},                                       // Guyana
+    HTI: {years: []},                                       // Haiti
+    HMD: {years: []},                                       // Heard Island and McDonald Islands
+    HND: {years: []},                                       // Honduras
+    HKG: {years: []},                                       // Hong Kong
+    HUN: {years: [2024]},                                   // Hungary
+    ISL: {years: []},                                       // Iceland
+    IND: {years: []},                                       // India
+    IDN: {years: []},                                       // Indonesia
+    IRN: {years: []},                                       // Iran
+    IRQ: {years: []},                                       // Iraq
+    IRL: {years: []},                                       // Ireland
+    IMN: {years: []},                                       // Isle of Man
+    ISR: {years: []},                                       // Israel
+    ITA: {years: [2021, 2022, 2023, 2024]},                 // Italy
+    CIV: {years: []},                                       // Ivory Coast
+    JAM: {years: []},                                       // Jamaica
+    JPN: {years: []},                                       // Japan
+    JEY: {years: []},                                       // Jersey
+    JOR: {years: []},                                       // Jordan
+    KAZ: {years: []},                                       // Kazakhstan
+    KEN: {years: []},                                       // Kenya
+    KIR: {years: []},                                       // Kiribati
+    UNK: {years: []},                                       // Kosovo
+    KWT: {years: []},                                       // Kuwait
+    KGZ: {years: []},                                       // Kyrgyzstan
+    LAO: {years: []},                                       // Laos
+    LVA: {years: [2014, 2018, 2021, 2022, 2023, 2024, 2025]},// Latvia
+    LBN: {years: []},                                       // Lebanon
+    LSO: {years: []},                                       // Lesotho
+    LBR: {years: []},                                       // Liberia
+    LBY: {years: []},                                       // Libya
+    LIE: {years: []},                                       // Liechtenstein
+    LTU: {years: [2022, 2023, 2024, 2025]},                 // Lithuania
+    LUX: {years: [2025]},                                   // Luxembourg
+    MAC: {years: []},                                       // Macau
+    MDG: {years: []},                                       // Madagascar
+    MWI: {years: []},                                       // Malawi
+    MYS: {years: []},                                       // Malaysia
+    MDV: {years: []},                                       // Maldives
+    MLI: {years: []},                                       // Mali
+    MLT: {years: [2024]},                                   // Malta
+    MHL: {years: []},                                       // Marshall Islands
+    MTQ: {years: []},                                       // Martinique
+    MRT: {years: []},                                       // Mauritania
+    MUS: {years: []},                                       // Mauritius
+    MYT: {years: []},                                       // Mayotte
+    MEX: {years: []},                                       // Mexico
+    FSM: {years: []},                                       // Micronesia
+    MDA: {years: []},                                       // Moldova
+    MCO: {years: [2026]},                                   // Monaco
+    MNG: {years: []},                                       // Mongolia
+    MNE: {years: [2023]},                                   // Montenegro
+    MSR: {years: []},                                       // Montserrat
+    MAR: {years: []},                                       // Morocco
+    MOZ: {years: []},                                       // Mozambique
+    MMR: {years: []},                                       // Myanmar
+    NAM: {years: []},                                       // Namibia
+    NRU: {years: []},                                       // Nauru
+    NPL: {years: []},                                       // Nepal
+    NLD: {years: [2017]},                                   // Netherlands
+    NCL: {years: []},                                       // New Caledonia
+    NZL: {years: []},                                       // New Zealand
+    NIC: {years: []},                                       // Nicaragua
+    NER: {years: []},                                       // Niger
+    NGA: {years: []},                                       // Nigeria
+    NIU: {years: []},                                       // Niue
+    NFK: {years: []},                                       // Norfolk Island
+    PRK: {years: []},                                       // North Korea
+    MKD: {years: []},                                       // North Macedonia
+    MNP: {years: []},                                       // Northern Mariana Islands
+    NOR: {years: [2016]},                                   // Norway
+    OMN: {years: []},                                       // Oman
+    PAK: {years: []},                                       // Pakistan
+    PLW: {years: []},                                       // Palau
+    PSE: {years: []},                                       // Palestine
+    PAN: {years: []},                                       // Panama
+    PNG: {years: []},                                       // Papua New Guinea
+    PRY: {years: []},                                       // Paraguay
+    PER: {years: []},                                       // Peru
+    PHL: {years: [2026]},                                   // Philippines
+    PCN: {years: []},                                       // Pitcairn Islands
+    POL: {years: [2022, 2023, 2024, 2025]},                 // Poland
+    PRT: {years: [2025]},                                   // Portugal
+    PRI: {years: []},                                       // Puerto Rico
+    QAT: {years: []},                                       // Qatar
+    COG: {years: []},                                       // Republic of the Congo
+    REU: {years: []},                                       // Réunion
+    ROU: {years: [2025]},                                   // Romania
+    RUS: {years: [2003]},                                   // Russia
+    RWA: {years: []},                                       // Rwanda
+    BLM: {years: []},                                       // Saint Barthélemy
+    SHN: {years: []},                                       // Saint Helena, Ascension and Tristan da Cunha
+    KNA: {years: []},                                       // Saint Kitts and Nevis
+    LCA: {years: []},                                       // Saint Lucia
+    MAF: {years: []},                                       // Saint Martin
+    SPM: {years: []},                                       // Saint Pierre and Miquelon
+    VCT: {years: []},                                       // Saint Vincent and the Grenadines
+    WSM: {years: []},                                       // Samoa
+    SMR: {years: []},                                       // San Marino
+    STP: {years: []},                                       // São Tomé and Príncipe
+    SAU: {years: []},                                       // Saudi Arabia
+    SEN: {years: []},                                       // Senegal
+    SRB: {years: [2023]},                                   // Serbia
+    SYC: {years: []},                                       // Seychelles
+    SLE: {years: []},                                       // Sierra Leone
+    SGP: {years: [2023]},                                   // Singapore
+    SXM: {years: []},                                       // Sint Maarten
+    SVK: {years: [2015, 2017]},                             // Slovakia
+    SVN: {years: [2024]},                                   // Slovenia
+    SLB: {years: []},                                       // Solomon Islands
+    SOM: {years: []},                                       // Somalia
+    ZAF: {years: []},                                       // South Africa
+    SGS: {years: []},                                       // South Georgia
+    KOR: {years: []},                                       // South Korea
+    SSD: {years: []},                                       // South Sudan
+    ESP: {years: []},                                       // Spain
+    LKA: {years: []},                                       // Sri Lanka
+    SDN: {years: []},                                       // Sudan
+    SUR: {years: []},                                       // Suriname
+    SJM: {years: []},                                       // Svalbard and Jan Mayen
+    SWE: {years: [2015, 2018, 2025]},                       // Sweden
+    CHE: {years: []},                                       // Switzerland
+    SYR: {years: []},                                       // Syria
+    TWN: {years: []},                                       // Taiwan
+    TJK: {years: []},                                       // Tajikistan
+    TZA: {years: []},                                       // Tanzania
+    THA: {years: [2023]},                                   // Thailand
+    TLS: {years: []},                                       // Timor-Leste
+    TGO: {years: []},                                       // Togo
+    TKL: {years: []},                                       // Tokelau
+    TON: {years: []},                                       // Tonga
+    TTO: {years: []},                                       // Trinidad and Tobago
+    TUN: {years: []},                                       // Tunisia
+    TUR: {years: []},                                       // Türkiye
+    TKM: {years: []},                                       // Turkmenistan
+    TCA: {years: []},                                       // Turks and Caicos Islands
+    TUV: {years: []},                                       // Tuvalu
+    UGA: {years: []},                                       // Uganda
+    UKR: {years: []},                                       // Ukraine
+    ARE: {years: []},                                       // United Arab Emirates
+    GBR: {years: [2026]},                                   // United Kingdom
+    USA: {years: [2017, 2025]},                             // United States
+    UMI: {years: []},                                       // United States Minor Outlying Islands
+    VIR: {years: []},                                       // United States Virgin Islands
+    URY: {years: []},                                       // Uruguay
+    UZB: {years: []},                                       // Uzbekistan
+    VUT: {years: []},                                       // Vanuatu
+    VAT: {years: [2023]},                                   // Vatican City
+    VEN: {years: []},                                       // Venezuela
+    VNM: {years: [2023]},                                   // Vietnam
+    WLF: {years: []},                                       // Wallis and Futuna
+    ESH: {years: []},                                       // Western Sahara
+    YEM: {years: []},                                       // Yemen
+    ZMB: {years: []},                                       // Zambia
+    ZWE: {years: []},                                       // Zimbabwe
+};

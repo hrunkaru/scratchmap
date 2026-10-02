@@ -1,7 +1,6 @@
-CITIES =
-[
-   //{name: 'Venice', latitude: 45.4408, longitude: 12.3155, radius: 3, fillKey: 'city', date: '1963-10'},
-   // Not really a city, but we define just one type of "POI" (fillKey here) in index.html, you can define more.
-   //{name: 'Khao Phing Kan', latitude: 8.2745, longitude: 98.5012, radius: 3, fillKey: 'city', date: '1974-12'},
-   //{name: 'San Francisco', latitude: 37.7749, longitude: -122.4194, radius: 3, fillKey: 'city', date: '1985-05'},
-]
+// Optional points of interest (cities, parks, …) drawn as small dots on the map.
+// `year` is optional; when set, the dot follows the year filters like countries do.
+export default [
+    // {name: 'Venice', lat: 45.4408, lng: 12.3155, year: 2023},
+    // {name: 'Khao Phing Kan', lat: 8.2745, lng: 98.5012, year: 2023},
+];
