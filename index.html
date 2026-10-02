@@ -84,13 +84,42 @@
             </button>
             <div class="sidebar__body">
                 <p class="issues" id="issues" role="alert" hidden></p>
-                <section class="stats" aria-label="Statistics">
-                    <div class="stat"><strong id="statCountries">0</strong><span>Countries</span></div>
-                    <div class="stat"><strong id="statContinents">0</strong><span>Continents</span></div>
-                    <div class="stat"><strong id="statYears">0</strong><span>Years travelled</span></div>
-                    <div class="stat"><strong id="statPercent">0%</strong><span id="statPercentLabel">of UN members</span></div>
+                <div class="tabs" role="tablist" aria-label="Side panel">
+                    <button type="button" role="tab" class="tab" id="tabOverview" aria-controls="panelOverview">Overview</button>
+                    <button type="button" role="tab" class="tab" id="tabCountries" aria-controls="panelCountries">Countries <span class="tab__count" id="countryCount"></span></button>
+                </div>
+
+                <section class="tab-panel overview" id="panelOverview" role="tabpanel" aria-labelledby="tabOverview">
+                    <div class="stats">
+                        <div class="stat"><strong id="statCountries">0</strong><span>Countries</span></div>
+                        <div class="stat"><strong id="statContinents">0</strong><span>Continents</span></div>
+                        <div class="stat"><strong id="statYears">0</strong><span>Years travelled</span></div>
+                        <div class="stat"><strong id="statPercent">0%</strong><span id="statPercentLabel">of UN members</span></div>
+                    </div>
+
+                    <h2 class="section-title">Highlights</h2>
+                    <dl class="highlights" id="highlights"></dl>
+
+                    <h2 class="section-title">Countries per year</h2>
+                    <ul class="chart-legend" aria-hidden="true">
+                        <li><i class="key-new"></i>New country</li>
+                        <li><i class="key-repeat"></i>Return visit</li>
+                    </ul>
+                    <div class="chart" id="chartPerYear"></div>
+
+                    <h2 class="section-title">Countries visited so far</h2>
+                    <div class="chart" id="chartCumulative"></div>
+
+                    <h2 class="section-title">By continent <span class="section-note">UN member states</span></h2>
+                    <ul class="meters" id="continentMeters"></ul>
+
+                    <details class="data-table">
+                        <summary>Year-by-year table</summary>
+                        <table id="yearTable"></table>
+                    </details>
                 </section>
-                <section class="list-panel" aria-label="Visited countries">
+
+                <section class="tab-panel list-panel" id="panelCountries" role="tabpanel" aria-labelledby="tabCountries" hidden>
                     <input type="search" id="search" class="search" placeholder="Search countries" aria-label="Search countries">
                     <ul class="country-list" id="countryList"></ul>
                     <p class="list-empty" id="listEmpty" hidden></p>

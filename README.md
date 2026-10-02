@@ -8,8 +8,14 @@ A personal map of the countries I have visited and when, published at
 * Full-screen map with a two-handle year range, continent filter and a timeline
   that plays your travels year by year (play/pause, step, 0.5×–2× speed).
 * Click or tap a country (or a list entry) to zoom to it and see its visits.
-* Side panel with statistics and a searchable country list; it can be hidden on
-  desktop and becomes a swipe-up sheet on phones.
+* Side panel with two tabs, which can be hidden on desktop and becomes a
+  swipe-up sheet on phones:
+  * **Overview** — headline numbers, highlights (first trip, most visited, busiest
+    year, longest streak, newest country), a chart of new vs. return visits per
+    year, a running total of countries, progress per continent and a
+    year-by-year table.
+  * **Countries** — searchable list of the countries in the current view.
+* Every number and chart follows the year range and continent filter.
 * Keyboard: <kbd>Space</kbd> play/pause, <kbd>←</kbd>/<kbd>→</kbd> step a year,
   <kbd>Esc</kbd> close the country card.
 * Light and dark themes (follows the system setting by default).
@@ -48,10 +54,11 @@ python3 -m http.server 8000
 | `cities.js` | Optional points of interest |
 | `data/countries-meta.js` | Names, continents, UN membership and positions for every country (generated) |
 | `js/data.js` | Reads and validates the data files |
-| `js/model.js` | Pure logic: filters → visible countries and statistics |
+| `js/model.js` | Pure logic: filters → visible countries, statistics and insights |
 | `js/store.js` | UI state (filters, timeline, selection) and URL syncing |
 | `js/map.js` | D3 world map: zoom, selection, small-country dots, tooltip |
-| `js/controls.js`, `js/sidebar.js`, `js/details.js` | Filters/timeline, stats/list, country card |
+| `js/controls.js`, `js/details.js` | Filters/timeline, country card |
+| `js/overview.js`, `js/sidebar.js`, `js/tabs.js` | Overview tab (stats, charts), country list, tab switching |
 | `js/layout.js` | Collapsible side panel (desktop) and bottom sheet (phone) |
 | `vendor/` | D3 v7, topojson-client, world-atlas 1:50m country shapes |
 | `tools/build-meta.mjs` | Regenerates `data/countries-meta.js` |

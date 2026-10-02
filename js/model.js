@@ -77,3 +77,77 @@ export function visitLevel(entry) {
     if (entry.country.home) return 'home';
     return Math.min(entry.years.length, 4);
 }
+
+// Everything the Overview panel shows, scoped to the same filters as the map.
+// "New" means the first visit ever recorded for that country, so a 2020 visit to a
+// country first seen in 2014 counts as a return visit even when the range starts in 2020.
+export function computeInsights(ds, state, view) {
+    const perYear = [];
+    for (let y = state.from; y <= state.to; y++) perYear.push({ year: y, new: [], repeat: [] });
+    const at = y => perYear[y - state.from];
+
+    let visits = 0;
+    const homes = [];
+    for (const { country: c, years } of view.visible) {
+        if (c.home) homes.push(c);
+        visits += years.length;
+        for (const y of years) (c.years[0] === y ? at(y).new : at(y).repeat).push(c);
+    }
+
+    // Running total of distinct countries seen since `from` (home counts from the start,
+    // so the last point matches the Countries tile).
+    const seen = new Set(homes.map(c => c.code));
+    const cumulative = perYear.map(row => {
+        row.new.forEach(c => seen.add(c.code));
+        row.repeat.forEach(c => seen.add(c.code));
+        return { year: row.year, count: seen.size };
+    });
+
+    const continents = CONTINENTS
+        .filter(name => state.continent === 'all' || state.continent === name)
+        .map(name => ({
+            name,
+            total: [...ds.countries.values()].filter(c => c.un && c.continent === name).length,
+            visited: view.visible.filter(e => e.country.un && e.country.continent === name).length,
+        }))
+        .filter(row => row.total > 0);
+
+    return { perYear, cumulative, continents, visits, highlights: highlights(view, perYear) };
+}
+
+function highlights(view, perYear) {
+    const travelled = view.visible.filter(e => e.years.length > 0);
+    if (!travelled.length) return null;
+    const byName = (a, b) => a.name.localeCompare(b.name);
+
+    const mostCount = Math.max(...travelled.map(e => e.years.length));
+    const firstYear = Math.min(...travelled.map(e => e.years[0]));
+    const newestYear = Math.max(...travelled.map(e => e.country.years[0]));
+
+    let busiest = perYear[0];
+    for (const row of perYear) {
+        if (row.new.length + row.repeat.length >= busiest.new.length + busiest.repeat.length) busiest = row;
+    }
+
+    // Longest run of consecutive years with at least one visit (latest wins a tie).
+    let streak = null;
+    let start = null;
+    for (const row of perYear) {
+        if (row.new.length + row.repeat.length > 0) {
+            start ??= row.year;
+            if (!streak || row.year - start + 1 >= streak.length) streak = { start, end: row.year, length: row.year - start + 1 };
+        } else {
+            start = null;
+        }
+    }
+
+    return {
+        first: { year: firstYear, countries: travelled.filter(e => e.years[0] === firstYear).map(e => e.country).sort(byName) },
+        mostVisited: { years: mostCount, countries: travelled.filter(e => e.years.length === mostCount).map(e => e.country).sort(byName) },
+        busiest: { year: busiest.year, count: busiest.new.length + busiest.repeat.length },
+        streak,
+        newest: newestYear >= perYear[0].year
+            ? { year: newestYear, countries: travelled.filter(e => e.country.years[0] === newestYear).map(e => e.country).sort(byName) }
+            : null,
+    };
+}

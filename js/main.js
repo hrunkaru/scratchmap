@@ -10,6 +10,8 @@ import { createControls } from './controls.js';
 import { createSidebar } from './sidebar.js';
 import { createDetails } from './details.js';
 import { initLayout } from './layout.js';
+import { createOverview } from './overview.js';
+import { initTabs } from './tabs.js';
 
 const $ = id => document.getElementById(id);
 
@@ -62,13 +64,25 @@ const sidebar = createSidebar({
     search: $('search'),
     list: $('countryList'),
     empty: $('listEmpty'),
+    summary: $('sheetSummary'),
+    countTab: $('countryCount'),
+}, { store });
+
+const overview = createOverview({
+    root: $('panelOverview'),
     statCountries: $('statCountries'),
     statContinents: $('statContinents'),
     statYears: $('statYears'),
     statPercent: $('statPercent'),
     statPercentLabel: $('statPercentLabel'),
-    summary: $('sheetSummary'),
-}, { store });
+    highlights: $('highlights'),
+    perYear: $('chartPerYear'),
+    cumulative: $('chartCumulative'),
+    continents: $('continentMeters'),
+    table: $('yearTable'),
+}, { store, dataset });
+
+initTabs([$('tabOverview'), $('tabCountries')]);
 
 const details = createDetails($('details'), { store });
 
@@ -84,6 +98,7 @@ function render(state) {
     controls.update(state, view);
     map.update(view, state);
     sidebar.update(view, state);
+    overview.update(view, state);
     details.update(view, state);
 }
 

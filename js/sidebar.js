@@ -1,7 +1,7 @@
-import { computeStats, UN_MEMBERS } from './model.js';
+import { computeStats } from './model.js';
 import { escapeHtml } from './map.js';
 
-// Statistics tiles and the searchable list of visible countries.
+// Searchable list of visible countries, plus the one-line summary on the phone sheet handle.
 export function createSidebar(els, { store }) {
     els.search.addEventListener('input', () => store.set({ search: els.search.value }));
     els.list.addEventListener('click', event => {
@@ -12,11 +12,7 @@ export function createSidebar(els, { store }) {
     return {
         update(view, s) {
             const stats = computeStats(view);
-            els.statCountries.textContent = stats.countries;
-            els.statContinents.textContent = stats.continents;
-            els.statYears.textContent = stats.years;
-            els.statPercent.textContent = `${stats.unPercent}%`;
-            els.statPercentLabel.textContent = `of ${UN_MEMBERS} UN members (${stats.unMembers})`;
+            els.countTab.textContent = view.visible.length;
             els.summary.textContent = `${stats.countries} ${stats.countries === 1 ? 'country' : 'countries'} · ${
                 stats.continents} ${stats.continents === 1 ? 'continent' : 'continents'} · ${
                 stats.years} ${stats.years === 1 ? 'year' : 'years'}`;
