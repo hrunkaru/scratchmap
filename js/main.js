@@ -9,6 +9,7 @@ import { createMap } from './map.js';
 import { createControls } from './controls.js';
 import { createSidebar } from './sidebar.js';
 import { createDetails } from './details.js';
+import { initLayout } from './layout.js';
 
 const $ = id => document.getElementById(id);
 
@@ -45,11 +46,14 @@ $('zoomOut').addEventListener('click', () => map.zoomBy(1 / 1.6));
 $('zoomReset').addEventListener('click', () => map.reset());
 
 const controls = createControls({
+    continents: $('continents'),
+    range: $('yearRange'),
     from: $('fromYear'),
     to: $('toYear'),
-    continents: $('continents'),
-    slider: $('timeline'),
+    back: $('stepBack'),
     play: $('playBtn'),
+    forward: $('stepForward'),
+    speed: $('speedBtn'),
     year: $('timelineYear'),
     count: $('timelineCount'),
 }, { store, dataset });
@@ -63,9 +67,17 @@ const sidebar = createSidebar({
     statYears: $('statYears'),
     statPercent: $('statPercent'),
     statPercentLabel: $('statPercentLabel'),
+    summary: $('sheetSummary'),
 }, { store });
 
 const details = createDetails($('details'), { store });
+
+initLayout({
+    app: $('app'),
+    sidebar: $('sidebar'),
+    panelToggle: $('panelToggle'),
+    handle: $('sheetHandle'),
+}, { store });
 
 function render(state) {
     const view = computeView(dataset, state);

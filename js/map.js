@@ -72,6 +72,9 @@ export function createMap(root, { topology, dataset, onSelect }) {
         const w = root.clientWidth;
         const h = root.clientHeight;
         if (!w || !h || (w === width && h === height)) return;
+        // Remember which place is in the middle of the screen so the view survives the refit.
+        const before = d3.zoomTransform(svg.node());
+        const center = width && before.k > 1 ? projection.invert(before.invert([width / 2, height / 2])) : null;
         width = w;
         height = h;
         projection.fitExtent([[PAD, PAD], [w - PAD, h - PAD]], fitTarget);
@@ -83,8 +86,13 @@ export function createMap(root, { topology, dataset, onSelect }) {
             d.xy = feats && d.area > 0.5 ? path.centroid(largestPart(feats)) : projection([d.country.lng, d.country.lat]);
         }
         zoom.extent([[0, 0], [w, h]]).translateExtent([[0, 0], [w, h]]);
-        svg.call(zoom.transform, d3.zoomIdentity);
-        if (state?.selected) focusOn(state.selected, false);
+        let t = d3.zoomIdentity;
+        if (center) {
+            const [x, y] = projection(center);
+            t = t.translate(w / 2 - before.k * x, h / 2 - before.k * y).scale(before.k);
+        }
+        svg.call(zoom.transform, t);
+        if (state?.selected && focused !== state.selected) focusOn(state.selected, false);
         drawMarkers();
     }
 

@@ -5,10 +5,15 @@ A personal map of the countries I have visited and when, published at
 
 * Static site, no backend, no build step, no external services — all libraries
   and map shapes are in `vendor/`.
-* Filter by year range and continent, play the timeline year by year, click or
-  tap a country (or a list entry) to zoom to it and see its visits.
+* Full-screen map with a two-handle year range, continent filter and a timeline
+  that plays your travels year by year (play/pause, step, 0.5×–2× speed).
+* Click or tap a country (or a list entry) to zoom to it and see its visits.
+* Side panel with statistics and a searchable country list; it can be hidden on
+  desktop and becomes a swipe-up sheet on phones.
+* Keyboard: <kbd>Space</kbd> play/pause, <kbd>←</kbd>/<kbd>→</kbd> step a year,
+  <kbd>Esc</kbd> close the country card.
 * Light and dark themes (follows the system setting by default).
-* The current view is kept in the URL, e.g. `?from=2020&continent=Europe&country=ITA`,
+* The current view is kept in the URL, e.g. `?from=2020&to=2024&continent=Europe&country=ITA`,
   so it can be bookmarked or shared.
 
 ## Adding a trip
@@ -47,6 +52,7 @@ python3 -m http.server 8000
 | `js/store.js` | UI state (filters, timeline, selection) and URL syncing |
 | `js/map.js` | D3 world map: zoom, selection, small-country dots, tooltip |
 | `js/controls.js`, `js/sidebar.js`, `js/details.js` | Filters/timeline, stats/list, country card |
+| `js/layout.js` | Collapsible side panel (desktop) and bottom sheet (phone) |
 | `vendor/` | D3 v7, topojson-client, world-atlas 1:50m country shapes |
 | `tools/build-meta.mjs` | Regenerates `data/countries-meta.js` |
 

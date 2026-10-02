@@ -16,30 +16,29 @@ const toInt = v => {
 };
 
 // Makes any (possibly partial or hand-typed) state consistent:
-// from <= cursor <= to, all inside the data's year range.
+// from <= to, both inside the data's year range.
 export function normalizeState(raw, ds) {
     const { min, max } = yearBounds(ds);
     let from = clamp(toInt(raw.from) ?? min, min, max);
     let to = clamp(toInt(raw.to) ?? max, min, max);
     if (from > to) [from, to] = [to, from];
-    const cursor = clamp(toInt(raw.cursor) ?? to, from, to);
     const continent = CONTINENTS.includes(raw.continent) ? raw.continent : 'all';
     const selected = raw.selected && ds.countries.has(raw.selected) ? raw.selected : null;
     return {
-        from, to, cursor, continent, selected,
+        from, to, continent, selected,
         search: typeof raw.search === 'string' ? raw.search : '',
-        playing: !!raw.playing && from < to,
+        playing: !!raw.playing,
     };
 }
 
 // A country is shown when it matches the continent filter and has at least one
-// visit between `from` and the timeline cursor. The home country is always shown.
+// visit between `from` and `to`. The home country is always shown.
 export function computeView(ds, state) {
     const byCode = new Map();
     const visible = [];
     for (const c of ds.countries.values()) {
         const inContinent = state.continent === 'all' || c.continent === state.continent;
-        const years = c.years.filter(y => y >= state.from && y <= state.cursor);
+        const years = c.years.filter(y => y >= state.from && y <= state.to);
         const entry = {
             country: c,
             years,
@@ -50,7 +49,7 @@ export function computeView(ds, state) {
         if (entry.visible) visible.push(entry);
     }
     visible.sort((a, b) => a.country.name.localeCompare(b.country.name));
-    const cities = ds.cities.filter(p => p.year == null || (p.year >= state.from && p.year <= state.cursor));
+    const cities = ds.cities.filter(p => p.year == null || (p.year >= state.from && p.year <= state.to));
     return { byCode, visible, cities };
 }
 

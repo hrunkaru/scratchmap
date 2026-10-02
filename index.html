@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="color-scheme" content="light dark">
     <title>My Travel Map</title>
     <link rel="stylesheet" href="css/style.css">
@@ -11,35 +11,32 @@
     <script type="module" src="js/main.js"></script>
 </head>
 <body>
-    <div class="app">
-        <main class="map-panel">
-            <header class="topbar">
-                <h1>My Travel Map</h1>
-                <button type="button" class="icon-btn" id="themeToggle"></button>
-            </header>
+    <div class="app" id="app">
+        <main class="stage">
+            <div class="map" id="map"></div>
 
-            <section class="controls" aria-label="Filters">
-                <div class="range">
-                    <label>From <select id="fromYear"></select></label>
-                    <label>To <select id="toYear"></select></label>
-                </div>
-                <div class="chips" id="continents" role="group" aria-label="Continent"></div>
-                <div class="timeline">
-                    <button type="button" class="play-btn" id="playBtn">Play</button>
-                    <input type="range" id="timeline" class="timeline__slider" aria-label="Show visits up to year">
-                    <div class="timeline__info">
-                        <strong id="timelineYear"></strong>
-                        <span id="timelineCount"></span>
+            <div class="dock dock--top">
+                <header class="toolbar">
+                    <h1>My Travel Map</h1>
+                    <div class="chips" id="continents" role="group" aria-label="Continent"></div>
+                    <div class="toolbar__actions">
+                        <button type="button" class="icon-btn" id="themeToggle"></button>
+                        <button type="button" class="icon-btn panel-toggle" id="panelToggle" aria-controls="sidebar">
+                            <svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><rect x="2.5" y="3.5" width="15" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12.5 3.5v13" stroke="currentColor" stroke-width="1.5"/></svg>
+                        </button>
+                    </div>
+                </header>
+                <div class="dock__row">
+                    <section class="details" id="details" aria-live="polite" hidden></section>
+                    <div class="map-controls" role="group" aria-label="Map zoom">
+                        <button type="button" class="icon-btn" id="zoomIn" aria-label="Zoom in" title="Zoom in">+</button>
+                        <button type="button" class="icon-btn" id="zoomOut" aria-label="Zoom out" title="Zoom out">−</button>
+                        <button type="button" class="icon-btn" id="zoomReset" aria-label="Show whole world" title="Show whole world">⤢</button>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <div class="map" id="map">
-                <div class="map-controls" role="group" aria-label="Map zoom">
-                    <button type="button" class="icon-btn" id="zoomIn" aria-label="Zoom in" title="Zoom in">+</button>
-                    <button type="button" class="icon-btn" id="zoomOut" aria-label="Zoom out" title="Zoom out">−</button>
-                    <button type="button" class="icon-btn" id="zoomReset" aria-label="Show whole world" title="Show whole world">⤢</button>
-                </div>
+            <div class="dock dock--bottom">
                 <ul class="legend" aria-label="Legend">
                     <li><i class="lvl-home"></i>Home</li>
                     <li><i class="lvl-1"></i>1 visit</li>
@@ -48,27 +45,57 @@
                     <li><i class="lvl-4"></i>4+</li>
                     <li><i class="lvl-0"></i>Not yet</li>
                 </ul>
-                <section class="details" id="details" aria-live="polite" hidden></section>
-                <p class="boot-error" id="bootError">
-                    The map needs JavaScript and must be opened through a web server (not as a local file).
-                    See README for a one-line preview command.
-                </p>
+                <section class="timeline" aria-label="Timeline">
+                    <div class="timeline__buttons">
+                        <button type="button" class="icon-btn icon-btn--flat" id="stepBack" aria-label="One year back" title="One year back (←)">
+                            <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M5 4v12M16 4l-8 6 8 6z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                        </button>
+                        <button type="button" class="play-btn" id="playBtn">
+                            <svg class="icon-play" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M6 4l10 6-10 6z" fill="currentColor"/></svg>
+                            <svg class="icon-pause" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M5 4h3.5v12H5zM11.5 4H15v12h-3.5z" fill="currentColor"/></svg>
+                        </button>
+                        <button type="button" class="icon-btn icon-btn--flat" id="stepForward" aria-label="One year forward" title="One year forward (→)">
+                            <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M15 4v12M4 4l8 6-8 6z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                        </button>
+                        <button type="button" class="speed-btn" id="speedBtn" aria-label="Playback speed 1×" title="Playback speed">1×</button>
+                    </div>
+                    <div class="year-range" id="yearRange">
+                        <div class="year-range__track"></div>
+                        <input type="range" id="fromYear" aria-label="From year">
+                        <input type="range" id="toYear" aria-label="To year">
+                    </div>
+                    <div class="timeline__info" aria-live="off">
+                        <strong id="timelineYear"></strong>
+                        <span id="timelineCount"></span>
+                    </div>
+                </section>
             </div>
+
+            <p class="boot-error" id="bootError">
+                The map needs JavaScript and must be opened through a web server (not as a local file).
+                See README for a one-line preview command.
+            </p>
         </main>
 
-        <aside class="sidebar">
-            <p class="issues" id="issues" role="alert" hidden></p>
-            <section class="stats" aria-label="Statistics">
-                <div class="stat"><strong id="statCountries">0</strong><span>Countries</span></div>
-                <div class="stat"><strong id="statContinents">0</strong><span>Continents</span></div>
-                <div class="stat"><strong id="statYears">0</strong><span>Years travelled</span></div>
-                <div class="stat"><strong id="statPercent">0%</strong><span id="statPercentLabel">of UN members</span></div>
-            </section>
-            <section class="list-panel" aria-label="Visited countries">
-                <input type="search" id="search" class="search" placeholder="Search countries" aria-label="Search countries">
-                <ul class="country-list" id="countryList"></ul>
-                <p class="list-empty" id="listEmpty" hidden></p>
-            </section>
+        <aside class="sidebar" id="sidebar" aria-label="Statistics and countries">
+            <button type="button" class="sheet-handle" id="sheetHandle" aria-controls="sidebar">
+                <span class="sheet-handle__bar" aria-hidden="true"></span>
+                <span class="sheet-handle__summary" id="sheetSummary"></span>
+            </button>
+            <div class="sidebar__body">
+                <p class="issues" id="issues" role="alert" hidden></p>
+                <section class="stats" aria-label="Statistics">
+                    <div class="stat"><strong id="statCountries">0</strong><span>Countries</span></div>
+                    <div class="stat"><strong id="statContinents">0</strong><span>Continents</span></div>
+                    <div class="stat"><strong id="statYears">0</strong><span>Years travelled</span></div>
+                    <div class="stat"><strong id="statPercent">0%</strong><span id="statPercentLabel">of UN members</span></div>
+                </section>
+                <section class="list-panel" aria-label="Visited countries">
+                    <input type="search" id="search" class="search" placeholder="Search countries" aria-label="Search countries">
+                    <ul class="country-list" id="countryList"></ul>
+                    <p class="list-empty" id="listEmpty" hidden></p>
+                </section>
+            </div>
         </aside>
     </div>
 </body>

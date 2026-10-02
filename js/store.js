@@ -27,7 +27,6 @@ function readUrl() {
     return {
         from: p.get('from'),
         to: p.get('to'),
-        cursor: p.get('year'),
         continent: p.get('continent'),
         selected: p.get('country')?.toUpperCase(),
     };
@@ -39,7 +38,6 @@ function writeUrl(state, ds) {
     const max = ds.years[ds.years.length - 1];
     if (state.from !== min) p.set('from', state.from);
     if (state.to !== max) p.set('to', state.to);
-    if (state.cursor !== state.to && !state.playing) p.set('year', state.cursor);
     if (state.continent !== 'all') p.set('continent', state.continent);
     if (state.selected) p.set('country', state.selected);
     const qs = p.toString();
